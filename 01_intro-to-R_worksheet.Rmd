@@ -1,0 +1,100 @@
+---
+title: "_Introduction to R_"
+subtitle: "R Basics"
+author: "Arun Frey"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,eval = FALSE, collapse = TRUE, cache = TRUE)
+```
+
+# Welcome!
+
+Welcome to your first `R` session! Today we'll cover some of the basics of how `R` works. This includes understanding how to assign values to objects, generate vectors, and load and inspect dataframes. 
+
+This worksheet provides you with exercises to complete during the lab sessions, and some important background information. If you don't get through everything in class, make sure you finish the rest of the material at home. 
+
+
+# Introduction
+
+## What is `R`?
+
+`R` is a free statistical programming language. You can download the latest version of `R` by visiting: [www.r-project.org](https://www.r-project.org). For this course, we will be running `R` in the integrated development environment (IDE) "RStudio". To download and setup the most recent version of RStudio, go to: [www.rstudio.com/products/rstudio/](https://www.rstudio.com/products/rstudio/).
+
+## Why use `R`?
+
+`R` is fantastic because, unlike some of the other statistical software you may have used, it is **completely free** and **open-source**! This means you won't have to pay for the program or for any subsequent updates. The `R` community is very inclusive, and you will likely find the right answer to any question you may have with a bit of googling.
+
+## Introducing RStudio
+
+RStudio is a nice interface that lets you write code, run scripts, and view the results all in one.
+
+-   **Source**: This is the code editor, where you write and save your code. To open a new R script, go to `File --> NewFile --> RScript`
+-   **Console**: This is where the output of your code will be printed.
+-   **Environment/History**: This is where any objects, such as vectors, matrices, or dataframes, will be stored.
+-   **Viewer**: This viewer previews any plots you create. You can also check your folder files and call for help here.  
+
+**Note**: You should always write code into the code editor instead of writing it directly into the console. This allows you to save and revisit the code at a later stage. By contrast, if you run code directly from the console, you will have to write it out all again after closing and re-opening RStudio, which isn't a lot of fun in the long run.
+
+To execute the line of source code where the cursor currently resides you press the **Ctrl + Enter/Cmd + Enter key**, or use the Run toolbar button (located on the top right corner of the editor pane).
+
+# Basic commands
+| **Command**       |   **What it does**                                             |
+|:------------------|:---------------------------------------------------------------|
+| `class(x)`          |   See the class of an object                                   |
+| `cor.test(x,y)`     |   Conduct a correlation test between variables between x and y |
+| `head(data)`        |   Shows first six rows of the data                             |
+| `hist(x)`           |   Create a histogram of a variable                             |
+| `length(x)`         |   Compute the length of a vector                               |
+| `ls()`              |   Lists all the objects that are stored in your environment    |
+| `mean(x)`           |   Compute the mean of a variable                               |
+| `median(x)`         |   Compute the median of a variable                             |
+| `quantile(x)`       |   Compute the quantiles of the variable                        |
+| `read.csv(data)`    |   Load data into R (remember to assign this to an object, by using `<-`!) |
+| `plot(y, x)`        |   Create a scatterplot that show the relationship between variables x and y
+| `sum(x)`            |   Calculate the sum of the vector’s values                     |
+| `summary(data)`     |   Compute summary statistics of the data/variable (mean, standard deviation, etc.)              |
+| `sd(x)`             |    Compute the standard deviation of a variable                 |
+| `tail(data)`        |   Shows last six rows of the data                              |
+
+
+- To look up how to use commands/options, use the help function in R: `help(command)` or `?` command.
+
+- Use `$` to call a variable. For example, if I have a dataset called data that contains a variable called `economic_growth`, use `dataset$economic_growth`. (Hint: you can use auto-complete by using the tab button on your keyboard once you have entered the first letter of the variable name after `$`.)
+
+- Use `<-` to assign a value or name to an object. For example, to assign the value 5 to an object called a, use `a <- 5`.
+
+- When you want to calculate the mean/median/standard deviation of a variable that has missing
+values, use the `na.rm=TRUE` option. E.g. `mean(dataset$economic_growth,na.rm=TRUE)`.
+
+- To combine multiple plots, use the `par(mfrow=c(number_of_rows,number_of_columns))`.
+
+\newpage
+
+
+# Exercises:  Reviewing vectors  
+
+1. Complete lessons 1, 4, and 5 in `swirl()`. To do that, follow the steps below: 
+
+```{r}
+install.packages("swirl") #you only need to do this one time
+library(swirl) # loads the package
+
+# if you don't see the R Programming course
+# run the following command
+install_from_swirl("R Programming", mirror = "bitbucket")
+
+swirl() # starts swirl and allows you to select from installed courses. 
+```
+
+2. Create a vector called `x` that contains the numbers 1 to 50. 
+
+3. Create a logical vector `y` that is `TRUE` if `x` is smaller than 25. 
+
+4. Create the vector `c(0, 5, 10, 15)` in two ways: using `c()` and using `seq()`. 
+
+5. Create a vector of length 4 that reads  `c("Hello", "my", "name", is")`, and save the vector under the name `my_name`.
+      - Using `my_name` and the function `c()`, create a new vector `my_name2` of length 5 that ends with your name.
+      - Collapse `my_name2` into a string of length 1.
+
