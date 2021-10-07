@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Arun Frey" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to R
+### Arun Frey
+### Department of Sociology, University of Oxford
+### 08.11.2021
+
+---
+
+
+
+
+class: inverse, center, middle
+
+# Recap of yesterday
+
+---
+# Vectors
+
+```r
+# vectors
+x &lt;- 1
+x2 &lt;- c(1, 2, 1, 1)
+x3 &lt;- c("hello", "hello", "course")
+
+# vector functions
+length(x2)
+## [1] 4
+
+unique(x3)
+## [1] "hello"  "course"
+
+sum(x2)
+## [1] 5
+round(mean(x2), digits = 0)
+## [1] 1
+
+paste(unique(x3), collapse = " ")
+## [1] "hello course"
+
+class(x3)
+## [1] "character"
+```
+
+---
+# Vector indexing 
+
+
+```r
+normal &lt;- rnorm(1000, mean = 0, sd = 1)
+
+normal[1:3]
+## [1]  0.08076094  0.75364362 -0.26310899
+
+normal_pos &lt;- normal
+
+normal_pos[normal_pos&lt;=0] &lt;- NA
+```
+
+---
+
+
+```r
+par(mfrow=c(1,2))
+hist(normal)
+hist(normal_pos)
+```
+
+![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+# Dataframes
+
+```r
+# dataframes
+class_df &lt;- data.frame(
+  "name" = c("Arun", "Mark", "Jenn"),
+  "age" =  c(29, 28, 25), 
+  "dep" = c("soc", "soc", "pol"), 
+  "degree" = c("dphil", "dphil", "msc")
+)
+
+# read data
+##read.csv, foreign::read.dta, read.delim
+```
+
+---
+
+
+```r
+# inspect data
+head(class_df, 2)
+##   name age dep degree
+## 1 Arun  29 soc  dphil
+## 2 Mark  28 soc  dphil
+
+tail(class_df, 2)
+##   name age dep degree
+## 2 Mark  28 soc  dphil
+## 3 Jenn  25 pol    msc
+
+str(class_df)
+## 'data.frame':	3 obs. of  4 variables:
+##  $ name  : chr  "Arun" "Mark" "Jenn"
+##  $ age   : num  29 28 25
+##  $ dep   : chr  "soc" "soc" "pol"
+##  $ degree: chr  "dphil" "dphil" "msc"
+
+summary(class_df)
+##      name                age            dep               degree         
+##  Length:3           Min.   :25.00   Length:3           Length:3          
+##  Class :character   1st Qu.:26.50   Class :character   Class :character  
+##  Mode  :character   Median :28.00   Mode  :character   Mode  :character  
+##                     Mean   :27.33                                        
+##                     3rd Qu.:28.50                                        
+##                     Max.   :29.00
+```
+
+---
+class: inverse, middle, center
+
+# Questions? 
+
+---
+# Indexing in dataframes
+
+A dataframe consists of `n * m` observations. 
+
+- `n`: number of rows
+- `m`: number of columns
+
+Just like with indexing vectors, you can also select individual observations in a dataframe, by specifying the row and the column of the observation `df[n, m]`. 
+
+
+```r
+df &lt;- data.frame("var1" = c(1, 2, 3), "var2" = c(4, 5, 6))
+
+df
+##   var1 var2
+## 1    1    4
+## 2    2    5
+## 3    3    6
+
+# observation in first row, first column
+df[1, 1]
+## [1] 1
+
+# observation in third row, second column
+df[3, "var2"]
+## [1] 6
+
+# first observation, all columns
+df[1, ]
+##   var1 var2
+## 1    1    4
+```
+
+---
+class: inverse
+
+# Quiz
+
+What does each of the following lines return? 
+
+
+```r
+
+df[1, 2]
+
+df[, 2]
+
+df[1,1]
+
+df[c(1, 2), 1]
+
+```
+
+
+---
+class: inverse
+
+# Quiz
+
+What does each of the following lines return? 
+
+
+```r
+df[1, 2]
+## [1] 4
+
+df[, 2]
+## [1] 4 5 6
+
+df[1,1]
+## [1] 1
+
+df[c(1, 2), 1]
+## [1] 1 2
+```
+
+---
+# Accessing variables in dataframes
+
+To access the names of variables (i.e. columns) in our data, use `names()`. 
+
+
+```r
+data("starwars")
+names(starwars)
+##  [1] "name"       "height"    
+##  [3] "mass"       "hair_color"
+##  [5] "skin_color" "eye_color" 
+##  [7] "birth_year" "sex"       
+##  [9] "gender"     "homeworld" 
+## [11] "species"    "films"     
+## [13] "vehicles"   "starships"
+```
+
+---
+
+# Selecting variables using `$`
+
+You can select variables using the `$` operator. 
+
+
+
+```r
+star_head &lt;- data.frame(head(starwars, 3))
+
+star_head$height
+## [1] 172 167  96
+
+# is (almost) the same as
+star_head[, "height"]
+## [1] 172 167  96
+
+class(star_head$height)
+## [1] "integer"
+
+class(star_head[, "height"])
+## [1] "integer"
+
+class(star_head[["height"]])
+## [1] "integer"
+```
+
+---
+
+# Selecting variables using `$`
+
+Using these variables, you can then use that variable for descriptive statistics, using the functions you've learnt
+
+
+```r
+mean(starwars$height, na.rm = T)
+## [1] 174.358
+
+# show first 5 unique species
+unique(starwars$species)[1:5]
+## [1] "Human"   "Droid"  
+## [3] "Wookiee" "Rodian" 
+## [5] "Hutt"
+
+head(starwars[, c("name", "species")])
+## # A tibble: 6 × 2
+##   name           species
+##   &lt;chr&gt;          &lt;chr&gt;  
+## 1 Luke Skywalker Human  
+## 2 C-3PO          Droid  
+## 3 R2-D2          Droid  
+## 4 Darth Vader    Human  
+## 5 Leia Organa    Human  
+## 6 Owen Lars      Human
+```
+
+---
+
+# Adding new variables
+
+
+```r
+survey &lt;- data.frame("index" = c(1, 2, 3),
+                     "name" = c("Mark", "Arun", "Jenn"))
+
+survey$age &lt;- c(28, 29, 25)
+
+survey
+##   index name age
+## 1     1 Mark  28
+## 2     2 Arun  29
+## 3     3 Jenn  25
+```
+
+---
+# Slicing data with [, ]
+
+#### Logical vectors
+
+---
+# Slicing with subset
+
+---
+class: inverse, middle, center
+
+# Exercise
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
