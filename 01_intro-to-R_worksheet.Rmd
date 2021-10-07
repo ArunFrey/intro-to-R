@@ -72,10 +72,9 @@ values, use the `na.rm=TRUE` option. E.g. `mean(dataset$economic_growth,na.rm=TR
 
 \newpage
 
+# Exercise 1
 
-# Exercises:  Reviewing vectors  
-
-1. Complete lessons 1, 4, and 5 in `swirl()`. To do that, follow the steps below: 
+1. Complete lessons 1, 3, 4, and 5 in `swirl()`. To do that, follow the steps below: 
 
 ```{r}
 install.packages("swirl") #you only need to do this one time
@@ -95,6 +94,47 @@ swirl() # starts swirl and allows you to select from installed courses.
 4. Create the vector `c(0, 5, 10, 15)` in two ways: using `c()` and using `seq()`. 
 
 5. Create a vector of length 4 that reads  `c("Hello", "my", "name", is")`, and save the vector under the name `my_name`.
-      - Using `my_name` and the function `c()`, create a new vector `my_name2` of length 5 that ends with your name.
-      - Collapse `my_name2` into a string of length 1.
+      - Using `my_name` and the function `c()`, create a new vector `my_name2`  that ends with your name.
 
+
+# Exercise 2
+
+1. Generate a vector that includes all even numbers between 2 and 100. Store the number in `even`. 
+
+2. Generate summary statistics for the `even` vector. 
+
+3. Check the length of `my_name2`. Modify the vector and save it under `my_name3` in a way that reads `"My name is [your name]"`
+
+4. What happens when you run, and how can you fix it? 
+
+```{r}
+x <- c(1, 2, "a", 4, 5)
+mean(x)
+```
+
+5. Convert x into a numeric vector, replacing `"a"` with `NA`
+
+6. Complete lesson 5 in `swirl()`. 
+
+
+# Exercise 3
+
+
+1. In the data folder of this course's Github repository, I have uploaded a dataset of World Bank country-year population estimates. I have uploaded the same dataset in `pop.csv`, `pop.Rda`, and `pop.dta` format. Load each of the datasets. 
+
+2. Load the `pop2.csv` dataset into `R` and inspect the data. Does it look any different to the previous datasets? If so, how can you fix this? _Hint_: If you are stuck, look at the documentation of the `read.csv()` function. 
+
+3. Save each of the datasets back to your workspace, under the names `pop_new.csv`, `pop_new.dta`, and `pop_new.Rda`. I haven't told you the function for saving data, but it's quite intuitive (and google is always your friend!) 
+
+4. Complete Exercise 7 and 12 in `swirl()`.
+
+5. Generate a dataset out of the following vectors:
+
+```{r}
+country <- c("Rwanda", "Mexico", "France", "Vietnam", "United Kingdom")
+continent <- c("Africa", "Americas", "Europe", "Asia", "Europe")
+life_exp <- c(46.2, 76.2, 80.7, 74.2, 79.4)
+gdp_pc <- c(863, 11978, 30470, 2442, 33203)
+```
+
+6. The above data is taken from the `gapminder` dataset, which you can load by typing `data(gapminder)`. Which country-year observation has the lowest and highest life expectancy, and the lowest and highest GDP per capita?  

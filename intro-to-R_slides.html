@@ -92,8 +92,6 @@ class: center, middle
   4. Generate descriptives
   
 ---
-# Using base::plot()
-
 
 ```r
 
@@ -121,43 +119,27 @@ class: center, middle
 ![](intro-to-R_slides_files/figure-html/covid-1.png)
 
 ---
-# Using ggplot2::ggplot()
+# If you want to dive deeper
 
-```r
-library(gapminder)
+This course only scratches the surface of what you can do in `R`. 
 
-gapminder %&gt;% 
-  filter(year == "2007") %&gt;%
-  ggplot(aes(x = gdpPercap,  y = lifeExp, 
-             size = pop, colour = continent)) +
-  geom_point(show.legend = FALSE) +
-  scale_x_log10() + 
-  ggtitle("Life expectancy and GDP per capita; 2007")
-```
+For more elaborate introductions and more advanced guides, see the following (free!) books: 
 
+- [YaRrr! The Pirate’s Guide to R by _Nathaniel D. Phillips](https://bookdown.org/ndphillips/YaRrr)
+    
+    - This book is a great introduction to base R, and lots of material I draw from in this presentation is based on the book!
+
+- [R for Data Science by Gareth Golemund and Hadley Wickham](https://r4ds.had.co.nz)
+
+  - This book is fantastic if you want to learn about the `tidyverse` and tidy R, which is a different way of writting R code than base R. 
+
+- [Advanced R by Hadley Wickham](http://adv-r.had.co.nz/Introduction.html)
+
+  - Ths book is good for those who want to get a really in-depth understanding of how `R` operates. 
+  
+  
 ---
-class: center, middle
-
-![](intro-to-R_slides_files/figure-html/gapminder-1.png)
-
-
----
-
-# Feeling stuck? 
-
-You can use `?` whenever you want to read the documentation of a particular command. 
-
-
-```r
-# how should I specify the mean and standard deviation of a normal distribution
-?rnorm
-# how does a histogram work
-?hist
-# how does the mean() function work
-?mean
-```
-
---
+# If you want to dive deeper
 
 The `R` community is very welcoming and inclusive. If you are feeling stuck, chances are someone has had the same issue before. 
 
@@ -167,41 +149,38 @@ Here are some helpful resources and great groups to join:
 - &lt;http://www.r-bloggers.com&gt;
 - &lt;http://www.stackoverflow.com&gt;
 - &lt;https://rladies.org&gt;
+- &lt;https://www.rstudio.com/resources/cheatsheets/&gt; (list of cheatsheets)
 
 ---
-# If you want to dive deeper
+# Installing `R` and RStudio
 
-This course only scratches the surface of what you can do in `R`. 
+- Download and install `R` from here &lt;https://cloud.r-project.org&gt;
 
-For more elaborate introductions and more advanced guides, see the following (free!) books: 
+- For Macs, you may have to download different versions:
 
-- [YaRrr! The Pirate’s Guide to R by _Nathaniel D. Phillips](https://bookdown.org/ndphillips/YaRrr)
+   - Intel chip (R-4.1.1.pkg) 
+   
+   - Apple Silicon M1 chip (R-4.1.1-arm64.pkg)
 
-- [R for Data Science by Gareth Golemund and Hadley Wickham](https://r4ds.had.co.nz)
-
-- [Advanced R by Hadley Wickham](http://adv-r.had.co.nz/Introduction.html)
-
----
-# What we'll cover today 
-
-## Basic programming
-
-  1. Object types
-  
-  2. Vectors
-  
-  3. Missingness
-  
-  4. Subsetting 
-  
-  5. Matrices and dataframes
-  
-  6. Loading data
-
-
+- Download RStudio here: &lt;https://www.rstudio.com/products/rstudio/download/&gt;
+    
+In this course we will be using `R` exclusively through RStudio. 
 
 ---
+class: center, inverse, middle 
+
+#Download and install R and RStudio
+
+---
+
 # Using RStudio
+
+When you open RStudio it should look something like this: 
+
+![](img/rstudio-1.png)
+---
+
+# Using RStudio 
 
 RStudio is an integrated development environment specifically developed for `R`, that lets you write code, run scripts, and view the results all in one.
 
@@ -214,17 +193,20 @@ RStudio is an integrated development environment specifically developed for `R`,
 -   **Viewer**: This viewer previews any plots you create. You can also check your folder files and call for help here.  
 
 ---
+
 background-image: url(https://bookdown.org/ndphillips/YaRrr/images/RStudio_Screenshot_Labels.png)
 background-size: contain
+
 ---
 
-# Using RStudio 
+
+# Tips for using RStudio 
 
 **Always** write code into the source code file, except for small checks and tests.
 
 --
 
-To execute the line of source code where the cursor currently resides you press the **Ctrl + Enter/Cmd + Enter key**, rather than pressing the Run toolbar button. 
+To execute the line of source code where the cursor currently resides you can press the **Ctrl + Enter/Cmd + Enter key**, rather than manually pressing the Run toolbar button. 
 
 --
 
@@ -243,9 +225,18 @@ head(mtcars, n = 2)
 ```
 
 ---
+# Send code from the source to the console 
+
+
+&lt;center&gt; &lt;img src="img/r-source-console.png" width="300"/&gt; &lt;/center&gt;
+
+
+---
 # Using packages
 
-R comes with a list of built in packages, but often you will want to use additional packages which do specific things really well. 
+R comes with a list of built in functions, but often you will want to use other functions written not by the original creators of `R`, but by other people. 
+
+If you want to use functions written by other people, you have to install it as a `package`. 
 
 To do this, we have to first install the package once, and then load it whenever we would like to use it.
 
@@ -260,7 +251,51 @@ install.packages('praise')
 # load the package to use its functions
 library(praise)
 praise()
-## [1] "You are marvelous!"
+## [1] "You are outstanding!"
+```
+
+---
+class: center, middle
+
+&lt;img src="https://bookdown.org/ndphillips/YaRrr/images/packagebulb.png" width="400"/&gt;
+
+Credit: YaRrr! The Pirate's Guide to R
+
+---
+# Using packages
+
+Sometimes you only need to use a very specific function of a package one time, and loading the entire package may seem unnecessary. 
+
+You can use ` package::function` to call the function you are after. This tells `R` to only load the package for this specific chunk of code.  
+
+
+```r
+cowsay::say("Welcome to the course!", by = "cow")
+## 
+##  ----- 
+## Welcome to the course! 
+##  ------ 
+##     \   ^__^ 
+##      \  (oo)\ ________ 
+##         (__)\         )\ /\ 
+##              ||------w|
+##              ||      ||
+```
+
+---
+
+# Feeling stuck? 
+
+You can use `?` whenever you want to read the documentation of a particular command. 
+
+
+```r
+# how should I specify the mean and standard deviation of a normal distribution
+?rnorm
+# how does a histogram work
+?hist
+# how does the mean() function work
+?mean
 ```
 
 ---
@@ -268,6 +303,24 @@ praise()
 class: inverse, center, middle
 
 # Introducing the Basics
+
+---
+# What we'll cover today 
+
+## Introducing the Basics
+
+  1. Object types
+  
+  2. Vectors
+  
+  3. Missingness
+  
+  4. Vector functions  
+  
+  5. Dataframes
+  
+  6. Loading data
+
 
 ---
 # Objects and functions
@@ -278,6 +331,8 @@ Almost everything in `R` is either an object or a function.
  
 - **Function**: takes objects as arguments, does something, and returns an object. 
 
+--
+
 
 ```r
 # Create a vector object called height
@@ -287,7 +342,7 @@ height &lt;- c(189, 178, 166, 178, 190)
 mean(height)
 ## [1] 180.2
 ```
-&amp;#8594; Thee function `mean()` takes the object `height`, calculates the average, and returns a single number. 
+&amp;#8594; The function `mean()` takes the object `height`, calculates the average, and returns a single number. 
 
 ---
 # Objects and functions
@@ -350,7 +405,32 @@ greetings
 ```
 
 ---
+class: inverse
 
+# Quiz 
+
+Just by looking at the code, what do each of the following lines return?
+
+```r
+12 - 2
+#A:
+
+x &lt;- 12 - 2
+
+y &lt;- x * 2
+y
+
+y/2
+y
+
+z &lt;- "1 + 2"
+z
+
+z + 3
+
+```
+
+---
 # Vectors
 
 We can create longer vectors by using `c()` (read: concatenate). 
@@ -386,113 +466,6 @@ For longer vectors, writing out each element can be tedious. In addition to `c()
 |     `a:b`|    `1:5`| 1, 2, 3, 4, 5    |
 |     `seq(from, to, by, length.out)`|    `seq(from = 0, to = 6, by = 2)`| 0, 2, 4, 6     |
 |     `rep(x, times, each, length.out)`|    `rep(c(7, 8), times = 2, each = 2)`| 7, 7, 8, 8, 7, 7, 8, 8     |
-
-
----
-# Vector functions 
-
-**Length**: checks the length of a vector
-
-```r
-x &lt;- 2
-y &lt;- c(0.5, 45, 7, 45, 0.5)
-z &lt;- c("1 2 3 4 5 ", "6 7 8")
-length(x)
-## [1] 1
-length(y)
-## [1] 5
-length(z)
-## [1] 2
-```
-
---
-
-**Sorting/unique**: sorts or displays the unique values of a vector
-
-```r
-sort(y)
-## [1]  0.5  0.5  7.0 45.0 45.0
-
-unique(y)
-## [1]  0.5 45.0  7.0
-```
-  
----
-
-# Summary statistics
-
-| Function           | Example                |Result                 |
-|:-------------------|:----------------------|:-----------------------|
-|     `sum(x), product(x)`|    `sum(1:10)` |55     |
-|     `min(x), max(x)`|    `min(1:10)`|1    |
-|     `mean(x), median(x)`|    `mean(1:10)`     | 5.5 |
-|     `sd(x), var(x), range(x)`|    `sd(1:10)` | 3.0276504 |
-|     `summary(x)`|    `summary(1:10)`|`Min = 1.00. 1st Qu. = 3.25, Median = 5.50, Mean = 5.50, 3rd Qu. = 7.75, Max = 10.0`     |
-
----
-
-# Summary statistics 
-
-Using these, we can easily calculate descriptive statistics for our data.
-
-
-```r
-age &lt;- c(22, 24, 25, 21, 28, 23, 24, 27)
-
-min(age)
-## [1] 21
-sd(age)
-## [1] 2.37547
-mean(age)
-## [1] 24.25
-```
-
-Just like with numeric vectors, you can check the vector's length and unique values. 
-
-
-```r
-welcome &lt;- c("Welcome", "to", "this", "course!")
-
-length(welcome)
-## [1] 4
-```
-
-But functions designed for numeric vectors won't work. 
-
-```r
-mean(welcome)
-## Warning in mean.default(welcome): argument is not numeric or logical: returning
-## NA
-## [1] NA
-```
-
----
-
-# Character vectors
-
-If you look at the output of `welcome`, each word is included in separate quotation marks. 
-
-```r
-welcome
-## [1] "Welcome" "to"      "this"    "course!"
-```
-
-This is because `R` treats each of these words as a separate element in a vector. 
-
---
-
-There are times when we might want to tell `R` to collapse the string into a single element. We can do this using the `paste()` function, specifying the option `collapse = TRUE`. 
-
-
-```r
-welcome2 &lt;- paste(welcome, collapse = " ")
-welcome2
-## [1] "Welcome to this course!"
-
-welcome3 &lt;- paste(welcome, collapse = "")
-welcome3
-## [1] "Welcometothiscourse!"
-```
 
 ---
 
@@ -536,7 +509,6 @@ Some logical operators include:
 | `x \&amp; y`      | x AND y                   |
 | `isTRUE(x)`   |	test if X is TRUE         |
 
-
 ---
 
 # Missing values 
@@ -545,7 +517,7 @@ When we deal with data in the real world, there is often lots of missingness.
 
 Missing values are denoted with `NA`. 
 
-They behave differently than other values. 
+`NA`s behave differently to other values. 
 
 
 ```r
@@ -553,14 +525,144 @@ num_vec &lt;- c(5, NA, 15, 20, 25, NA)
 num_vec / 5
 ## [1]  1 NA  3  4  5 NA
 
+NA + 3
+## [1] NA
+
+c("hello", "my", "name", "is", NA)
+## [1] "hello" "my"    "name"  "is"    NA
+```
+
+---
+class: inverse, middle, center
+
+# Complete Exercise 1 on the worksheet
+
+---
+
+# Vector functions
+
+**Length**:
+Checks the length of a vector
+
+```r
+x &lt;- 2
+y &lt;- c(0.5, 45, 7, 45, 0.5)
+z1 &lt;- c("1 2 3 4 5 ", "6 7 8")
+length(x)
+## [1] 1
+length(y)
+## [1] 5
+length(z)
+## [1] 3
+```
+
+--
+
+**Sorting/unique**: sorts or displays the unique values of a vector
+
+```r
+sort(y)
+## [1]  0.5  0.5  7.0 45.0 45.0
+
+unique(y)
+## [1]  0.5 45.0  7.0
+```
+  
+---
+
+# Numeric vector functions
+
+| Function           | Example                |Result                 |
+|:-------------------|:----------------------|:-----------------------|
+|     `sum(x), product(x)`|    `sum(1:10)` |55     |
+|     `min(x), max(x)`|    `min(1:10)`|1    |
+|     `mean(x), median(x)`|    `mean(1:10)`     | 5.5 |
+|     `sd(x), var(x), range(x)`|    `sd(1:10)` | 3.0276504 |
+|     `summary(x)`|    `summary(1:10)`|`Min = 1.00. 1st Qu. = 3.25, Median = 5.50, Mean = 5.50, 3rd Qu. = 7.75, Max = 10.0`     |
+
+---
+class: inverse
+
+# Quiz
+
+Copy the following two vectors:
+
+```r
+age &lt;- c(22, 24,25, 25, 22, 21, 28, 23, 24, 27)
+welcome &lt;- c("Welcome", "to", "this", "course!")
+```
+
+Use `R` to generate: 
+
+1. The unique values in `age`. 
+
+2. The length of welcome
+
+3. The mean of age. 
+
+4. Round the mean of age to 0 decimals. _Hint_: You can use the `round` function, and see how it works using `?round`. 
+
+5. Can you compute the mean of `welcome`. Why/Why not? 
+
+---
+
+# Character vector functions
+
+If you look at the output of `welcome`, each word is included in separate quotation marks. 
+
+```r
+welcome
+## [1] "Welcome" "to"      "this"    "course!"
+```
+
+This is because `R` treats each of these words as a separate element in a vector. 
+
+--
+
+There are times when we might want to tell `R` to collapse the string into a single element. We can do this using the `paste()` function, specifying the option `collapse = TRUE`. 
+
+
+```r
+welcome2 &lt;- paste(welcome, collapse = " ")
+welcome2
+## [1] "Welcome to this course!"
+
+welcome3 &lt;- paste(welcome, collapse = "")
+welcome3
+## [1] "Welcometothiscourse!"
+```
+
+
+---
+
+# Missing values 
+
+A lot of descriptive functions will throw up an error when there are missing values. 
+
+
+```r
+num_vec &lt;- c(5, NA, 15, 20, 25, NA)
 sum(num_vec)
+## [1] NA
+mean(num_vec)
 ## [1] NA
 ```
 
 --
 
-`is.na` is a logical operation that allows us to identif missing values. 
-In some functions we can specify `na.rm = TRUE` to remove missing values from the operation.
+Descriptive functions include the argument `na.rm = TRUE`, which explicitly tells `R` to ignore missing values. 
+
+
+```r
+sum(num_vec, na.rm = TRUE)
+## [1] 65
+mean(num_vec, na.rm = TRUE)
+## [1] 16.25
+```
+
+--
+
+`is.na` is a logical operation that allows us to identify missing values. 
 
 
 ```r
@@ -600,29 +702,9 @@ as.numeric(x)
 
 
 ---
+class: inverse, middle, center
 
-# Exercises
-
-1. Create the vector c(0, 5, 10, 15) in two ways: using `c()` and using `seq()`. 
-
-2. Create a character vector of length 4 that reads c("Hello", "my", "name", is"), and save the vector under the name `my_name`.
-
-  - Using `my_name` and the function `c()`, create a new vector `my_name2` of length 5 that ends with your name. 
-  
-  - Collapse `my_name2` into a string of length 1. 
-  
-3. Complete lessons 1, 4, and 5 in `swirl()`.
-
-
-```r
-install.packages("swirl")
-
-library(swirl)
-
-# Run swirl() to start the practice lessons 
-
-swirl()
-```
+# Complete Exercise 2 on the worksheet
 
 ---
 
@@ -685,6 +767,62 @@ This is a really useful feature for quick calculations!
 
 
 ---
+class: inverse
+
+# Quiz 
+
+
+```r
+# Generates a standard normal distribution
+x_norm &lt;- rnorm(1000, mean = 0, sd = 1)
+```
+
+1. Get the 10th and 20th observation. 
+
+2. Save all observations below 0 in a new variable called `x_norm_neg`. 
+
+3. How many observations are below 0? 
+
+4. Get the proportion of values below -2 and above 2. 
+
+---
+
+class: inverse
+
+# Quiz 
+
+1. Get the 10th and 20th observation
+
+```r
+x_norm[c(10, 20)]
+## [1]  1.1619958 -0.6607139
+```
+--
+
+2. Save all observations below 0 in a new variable called `x_norm_neg`. 
+
+```r
+x_norm_neg &lt;- x_norm[x_norm&lt;0]
+```
+
+--
+
+3. How many observations are below 0? 
+
+```r
+length(x_norm_neg)
+## [1] 511
+```
+--
+
+4. Get the proportion of values below -2 and above 2. 
+
+```r
+mean(x_norm &gt; 2 | x_norm &lt; -2)
+## [1] 0.044
+```
+---
+
 
 # Changing values of a vector 
 
@@ -703,7 +841,8 @@ age
 ```
 
 ---
-# Exercises
+class: inverse
+# Quiz
 
 
 ```r
@@ -720,13 +859,7 @@ x[!is.na(x)]
 
 2. What is a quick way to calculate the share of missing values in x? 
 
---
-
-
-```r
-mean(is.na(x))
-## [1] 0.2
-```
+3. Replace the missing values in `x` using the `is.na()` operator. 
 
 ---
 
@@ -735,6 +868,67 @@ mean(is.na(x))
 Most of the work we do as sociologists will involve playing around with rectangular data or dataframes. 
 
 While vectors are one dimensional, dataframes have two dimensions; rows and columns. 
+
+--
+- **columns**: variables
+
+- **rows**: observations
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; height &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mass &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; hair_color &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; skin_color &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Luke Skywalker &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 172 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; blond &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; fair &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; C-3PO &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 167 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; gold &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; R2-D2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; white, blue &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Darth Vader &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 202 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 136 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; none &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; white &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Leia Organa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 150 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; brown &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; light &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Owen Lars &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 178 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 120 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; brown, grey &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; light &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 ---
 
@@ -752,14 +946,14 @@ You can turn multiple vectors into a dataframe using the `data.frame` command.
 
 ```r
 # vectors
-vec_name &lt;- c("Nigeria", "Gambia", "Finland", "Brazil")
-vec_year &lt;- 2013
-vec_pop_1m &lt;- c(173.6, 1.8, 5.4, 200.4)
+country_name &lt;- c("Nigeria", "Gambia", "Finland", "Brazil")
+country_year &lt;- 2013
+country_pop_1m &lt;- c(173.6, 1.8, 5.4, 200.4)
 
 # combine into dataframe 
-pop_df &lt;- data.frame("country" = vec_name, 
-                     "year" = vec_year, 
-                     "pop_1m" = vec_pop_1m,
+pop_df &lt;- data.frame("country" = country_name, 
+                     "year" = country_year, 
+                     "pop_1m" = country_pop_1m,
                      stringsAsFactors = FALSE)
 
 pop_df
@@ -770,28 +964,56 @@ pop_df
 ## 4  Brazil 2013  200.4
 ```
 
+--- 
+# Load data
+
+Rather than constructing your own dataframe in `R`, you will often work with data that already comes in a specific format, such as a csv, excel, .txt, Stata (.dta), or other file type. 
+
+`R` can load all these different file types. 
+
+```r
+
+# csv file 
+data &lt;- read.csv(data)
+
+# To load stata files, you have to use the foreing package
+# Note that you might need to install the package 
+data &lt;- foreign::read.dta(data)
+
+# load an R data file 
+load("data.Rda")
+
+```
+
+---
+class: center, inverse, middle 
+
+# Complete Exercise 3 on the worksheet
+
+
 ---
 # Inspect the data
 
-You can use various functions to inspect your dataframe. 
+Here are some of the most important ways to inspect a dataframe. 
 
 | Function| Description| 
 |:------------------------|:-----------------------------|
 |     `head(x), tail(x)`| Print the first few rows (or last few rows). | 
 |     `View(x)`| Open the entire object in a new window | 
 |     `nrow(x), ncol(x), dim(x)`| Count the number of rows and columns  | 
-|     `rownames(), colnames(), names()`| Show the row (or column) names   | 
-|     `str(x), summary(x)`| Show the structure of the dataframe (ie., dimensions and classes) and summary statistics| 
+|     `names()`| Show the row (or column) names   | 
+|     `summary(x)`| Show the  summary statistics of a dataframe | 
 
 ---
 # Inspect the data
 
 
 ```r
-
+# get the dimensions (rows and columns) of your data
 dim(pop_df)
 ## [1] 4 3
 
+# view the first 5 rows of data
 head(pop_df)
 ##   country year pop_1m
 ## 1 Nigeria 2013  173.6
@@ -799,9 +1021,23 @@ head(pop_df)
 ## 3 Finland 2013    5.4
 ## 4  Brazil 2013  200.4
 
+# view the last 2 rows of data
+tail(pop_df, 2)
+##   country year pop_1m
+## 3 Finland 2013    5.4
+## 4  Brazil 2013  200.4
+```
+
+---
+# Inspect the data 
+
+
+```r
+# inspect the variable names in your dataframe
 names(pop_df)
 ## [1] "country" "year"    "pop_1m"
 
+# generate summary statistics for each variable in your dataframe. 
 summary(pop_df)
 ##    country               year          pop_1m     
 ##  Length:4           Min.   :2013   Min.   :  1.8  
@@ -813,32 +1049,9 @@ summary(pop_df)
 ```
 
 ---
+class: inverse, middle, center
 
-# Load data
-
-Rather than constructing your own dataframe, you will often work with data that already comes in a specific format, such as a csv, excel, .txt, Stata (.dta), or other file type. 
-
-`R` can load all these different file types. 
-
-```r
-
-# csv file 
-data &lt;- read.csv(data)
-
-# Stata file
-data &lt;- foreign::read.dta(data)
-
-# load R data file
-load("data.Rda")
-
-```
-
----
-class: center, inverse, middle 
-
-# Exercises
-
-
+# Complete Exercise 3 on the worksheet
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
