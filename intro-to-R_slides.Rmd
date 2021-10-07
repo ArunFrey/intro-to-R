@@ -42,6 +42,8 @@ leaflet() %>% addTiles() %>% setView(-1.264, 51.752, zoom = 17)
 
 ---
 
+
+
 # What is `R`? 
 
 - `R` is a free statistical programming software. You can download R [here](https://www.r-project.org).
@@ -91,7 +93,11 @@ include_graphics("img/rstudio-screenshot.png")
   3. Load and inspect data
   
   4. Generate descriptives
-  
+
+---
+class: center, middle 
+# Go to Github to download this course: <https://github.com/ArunFrey/intro-to-R>
+
 ---
 ```{r covid, fig.show="hide"}
 
