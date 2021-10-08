@@ -117,70 +117,6 @@ class: inverse, middle, center
 # Questions? 
 
 ---
-# Indexing in dataframes
-
-A dataframe consists of `n * m` observations. 
-
-- `n`: number of rows
-- `m`: number of columns
-
-Just like with indexing vectors, you can also select individual observations in a dataframe, by specifying the row and the column of the observation `df[n, m]`. 
-
-```{r}
-df <- data.frame("var1" = c(1, 2, 3), "var2" = c(4, 5, 6))
-
-df
-
-# observation in first row, first column
-df[1, 1]
-
-# observation in third row, second column
-df[3, "var2"]
-
-# first observation, all columns
-df[1, ]
-
-```
-
----
-class: inverse
-
-# Quiz
-
-What does each of the following lines return? 
-
-```{r, eval = F}
-
-df[1, 2]
-
-df[, 2]
-
-df[1,1]
-
-df[c(1, 2), 1]
-
-```
-
-
----
-class: inverse
-
-# Quiz
-
-What does each of the following lines return? 
-
-```{r, eval = T}
-df[1, 2]
-
-df[, 2]
-
-df[1,1]
-
-df[c(1, 2), 1]
-
-```
-
----
 # Accessing variables in dataframes
 
 To access the names of variables (i.e. columns) in our data, use `names()`. 
@@ -238,20 +174,126 @@ survey <- data.frame("index" = c(1, 2, 3),
 survey$age <- c(28, 29, 25)
 
 survey
+
+survey$age_sq <- survey$age^2
 ```
+
+---
+# Indexing in dataframes
+
+A dataframe consists of `n * m` observations. 
+
+- `n`: number of rows
+- `m`: number of columns
+
+Just like with indexing vectors, you can also select individual observations in a dataframe, by specifying the row and the column of the observation `df[rows, columns]`. 
+
+```{r}
+df <- data.frame("var1" = c(1, 2, 3), "var2" = c(4, 5, 6))
+
+df
+
+# observation in first row, first column
+df[1, 1]
+
+# observation in third row, second column
+df[3, "var2"]
+
+# first observation, all columns
+df[1, ]
+
+```
+
+---
+class: inverse
+
+# Quiz
+
+What does each of the following lines return? 
+
+```{r, eval = F}
+
+df[1, 2]
+
+df[, 2]
+
+df[1,1]
+
+df[c(1, 2), 1]
+
+
+```
+
+
+---
+class: inverse
+
+# Quiz
+
+What does each of the following lines return? 
+
+```{r, eval = T}
+df[1, 2]
+
+df[, 2]
+
+df[1,1]
+
+df[c(1, 2), 1]
+
+```
+
 
 ---
 # Slicing data with [, ]
 
 #### Logical vectors
 
+You can also index dataframes using a logical vector
+
+```{r}
+# create a new dataframe with only
+# those cars with 6 cylinders
+mtcars_6cyl <- mtcars[mtcars$cyl==6, ]
+
+# create a new dataframe of only cars with 6 cylinders and mpg above 20  
+mtcars_6cyl_20mpg <- mtcars[mtcars$mpg>20 & mtcars$cyl==6]
+```
+
 ---
 # Slicing with subset
 
+The `subset()` function allows you to slice data just like with `[]`, but the code is easier to write. 
+
+
+```{r}
+# subset mtcars to only cars with 6 cylinders and 20 or more mpg
+subset(x = mtcars, 
+       subset = cyl == 6 & 
+         mpg > 20)
+
+```
+
+---
+class: inverse
+
+# Quiz
+
+```{r}
+star_df <- head(starwars, 10)
+
+# calculate mean height
+mean(star_df$height, na.rm = TRUE)
+
+# proportion of humans in data
+sum(star_df$species=="Human") / length(star_df)
+  
+  
+```
 ---
 class: inverse, middle, center
 
-# Exercise
+# Complete the Exercise worksheet
 
 
 

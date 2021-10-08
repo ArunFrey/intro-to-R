@@ -823,7 +823,8 @@ pop_df <- data.frame("country" = country_name,
 pop_df
 ```
 
---- 
+---
+
 # Load data
 
 Rather than constructing your own dataframe in `R`, you will often work with data that already comes in a specific format, such as a csv, excel, .txt, Stata (.dta), or other file type. 

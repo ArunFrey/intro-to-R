@@ -134,6 +134,95 @@ class: inverse, middle, center
 # Questions? 
 
 ---
+# Accessing variables in dataframes
+
+To access the names of variables (i.e. columns) in our data, use `names()`. 
+
+
+```r
+data("starwars")
+names(starwars)
+##  [1] "name"       "height"     "mass"       "hair_color" "skin_color"
+##  [6] "eye_color"  "birth_year" "sex"        "gender"     "homeworld" 
+## [11] "species"    "films"      "vehicles"   "starships"
+```
+
+---
+
+# Selecting variables using `$`
+
+You can select variables using the `$` operator. 
+
+
+
+```r
+star_head &lt;- data.frame(head(starwars, 3))
+
+star_head$height
+## [1] 172 167  96
+
+# is (almost) the same as
+star_head[, "height"]
+## [1] 172 167  96
+
+class(star_head$height)
+## [1] "integer"
+
+class(star_head[, "height"])
+## [1] "integer"
+
+class(star_head[["height"]])
+## [1] "integer"
+```
+
+---
+
+# Selecting variables using `$`
+
+Using these variables, you can then use that variable for descriptive statistics, using the functions you've learnt
+
+
+```r
+mean(starwars$height, na.rm = T)
+## [1] 174.358
+
+# show first 5 unique species
+unique(starwars$species)[1:5]
+## [1] "Human"   "Droid"   "Wookiee" "Rodian"  "Hutt"
+
+head(starwars[, c("name", "species")])
+## # A tibble: 6 × 2
+##   name           species
+##   &lt;chr&gt;          &lt;chr&gt;  
+## 1 Luke Skywalker Human  
+## 2 C-3PO          Droid  
+## 3 R2-D2          Droid  
+## 4 Darth Vader    Human  
+## 5 Leia Organa    Human  
+## 6 Owen Lars      Human
+```
+
+---
+
+# Adding new variables
+
+
+```r
+survey &lt;- data.frame("index" = c(1, 2, 3),
+                     "name" = c("Mark", "Arun", "Jenn"))
+
+survey$age &lt;- c(28, 29, 25)
+
+survey
+##   index name age
+## 1     1 Mark  28
+## 2     2 Arun  29
+## 3     3 Jenn  25
+
+survey$age_sq &lt;- survey$age^2
+```
+
+---
 # Indexing in dataframes
 
 A dataframe consists of `n * m` observations. 
@@ -141,7 +230,7 @@ A dataframe consists of `n * m` observations.
 - `n`: number of rows
 - `m`: number of columns
 
-Just like with indexing vectors, you can also select individual observations in a dataframe, by specifying the row and the column of the observation `df[n, m]`. 
+Just like with indexing vectors, you can also select individual observations in a dataframe, by specifying the row and the column of the observation `df[rows, columns]`. 
 
 
 ```r
@@ -210,111 +299,63 @@ df[c(1, 2), 1]
 ## [1] 1 2
 ```
 
----
-# Accessing variables in dataframes
-
-To access the names of variables (i.e. columns) in our data, use `names()`. 
-
-
-```r
-data("starwars")
-names(starwars)
-##  [1] "name"       "height"    
-##  [3] "mass"       "hair_color"
-##  [5] "skin_color" "eye_color" 
-##  [7] "birth_year" "sex"       
-##  [9] "gender"     "homeworld" 
-## [11] "species"    "films"     
-## [13] "vehicles"   "starships"
-```
-
----
-
-# Selecting variables using `$`
-
-You can select variables using the `$` operator. 
-
-
-
-```r
-star_head &lt;- data.frame(head(starwars, 3))
-
-star_head$height
-## [1] 172 167  96
-
-# is (almost) the same as
-star_head[, "height"]
-## [1] 172 167  96
-
-class(star_head$height)
-## [1] "integer"
-
-class(star_head[, "height"])
-## [1] "integer"
-
-class(star_head[["height"]])
-## [1] "integer"
-```
-
----
-
-# Selecting variables using `$`
-
-Using these variables, you can then use that variable for descriptive statistics, using the functions you've learnt
-
-
-```r
-mean(starwars$height, na.rm = T)
-## [1] 174.358
-
-# show first 5 unique species
-unique(starwars$species)[1:5]
-## [1] "Human"   "Droid"  
-## [3] "Wookiee" "Rodian" 
-## [5] "Hutt"
-
-head(starwars[, c("name", "species")])
-## # A tibble: 6 × 2
-##   name           species
-##   &lt;chr&gt;          &lt;chr&gt;  
-## 1 Luke Skywalker Human  
-## 2 C-3PO          Droid  
-## 3 R2-D2          Droid  
-## 4 Darth Vader    Human  
-## 5 Leia Organa    Human  
-## 6 Owen Lars      Human
-```
-
----
-
-# Adding new variables
-
-
-```r
-survey &lt;- data.frame("index" = c(1, 2, 3),
-                     "name" = c("Mark", "Arun", "Jenn"))
-
-survey$age &lt;- c(28, 29, 25)
-
-survey
-##   index name age
-## 1     1 Mark  28
-## 2     2 Arun  29
-## 3     3 Jenn  25
-```
 
 ---
 # Slicing data with [, ]
 
 #### Logical vectors
 
+You can also index dataframes using a logical vector
+
+
+```r
+# create a new dataframe with only
+# those cars with 6 cylinders
+mtcars_6cyl &lt;- mtcars[mtcars$cyl==6, ]
+
+# create a new dataframe of only cars with 6 cylinders and mpg above 20  
+mtcars_6cyl_20mpg &lt;- mtcars[mtcars$mpg&gt;20 &amp; mtcars$cyl==6]
+```
+
 ---
 # Slicing with subset
 
+The `subset()` function allows you to slice data just like with `[]`, but the code is easier to write. 
+
+
+
+```r
+# subset mtcars to only cars with 6 cylinders and 20 or more mpg
+subset(x = mtcars, 
+       subset = cyl == 6 &amp; 
+         mpg &gt; 20)
+##                 mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Hornet 4 Drive 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+```
+
+---
+class: inverse
+
+# Quiz
+
+
+```r
+star_df &lt;- head(starwars, 10)
+
+# calculate mean height
+mean(star_df$height, na.rm = TRUE)
+## [1] 159.2
+
+# proportion of humans in data
+sum(star_df$species=="Human") / length(star_df)
+## [1] 0.5
+```
 ---
 class: inverse, middle, center
 
-# Exercise
+# Complete the Exercise worksheet
 
 
 
