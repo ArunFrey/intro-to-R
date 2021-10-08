@@ -236,12 +236,6 @@ Just like with indexing vectors, you can also select individual observations in 
 ```r
 df &lt;- data.frame("var1" = c(1, 2, 3), "var2" = c(4, 5, 6))
 
-df
-##   var1 var2
-## 1    1    4
-## 2    2    5
-## 3    3    6
-
 # observation in first row, first column
 df[1, 1]
 ## [1] 1
@@ -336,6 +330,45 @@ subset(x = mtcars,
 ```
 
 ---
+# Plotting data
+
+You can plot descriptive statistics using the `plot()` and `hist()` commands. 
+
+`hist()` visualises the distribution of one variable.
+
+
+```r
+hist(starwars$height)
+```
+
+---
+
+
+```r
+hist(starwars$height)
+```
+
+![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+---
+# Plotting data
+
+`plot()` visualises the correlation of two variables, through a scatterplot
+
+
+```r
+plot(mtcars$mpg, mtcars$wt)
+```
+---
+
+
+```r
+plot(mtcars$mpg, mtcars$wt)
+```
+
+![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+
+---
 class: inverse
 
 # Quiz
@@ -345,12 +378,13 @@ class: inverse
 star_df &lt;- head(starwars, 10)
 
 # calculate mean height
-mean(star_df$height, na.rm = TRUE)
-## [1] 159.2
 
 # proportion of humans in data
-sum(star_df$species=="Human") / length(star_df)
-## [1] 0.5
+
+# generate a new variable that displays the mass per height
+#of each starwars character
+# store this in a new variable called mass_height
+  
 ```
 ---
 class: inverse, middle, center

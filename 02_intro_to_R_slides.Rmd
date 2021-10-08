@@ -191,8 +191,6 @@ Just like with indexing vectors, you can also select individual observations in 
 ```{r}
 df <- data.frame("var1" = c(1, 2, 3), "var2" = c(4, 5, 6))
 
-df
-
 # observation in first row, first column
 df[1, 1]
 
@@ -275,6 +273,37 @@ subset(x = mtcars,
 ```
 
 ---
+# Plotting data
+
+You can plot descriptive statistics using the `plot()` and `hist()` commands. 
+
+`hist()` visualises the distribution of one variable.
+
+```{r, eval = F}
+hist(starwars$height)
+```
+
+---
+
+```{r, eval = T}
+hist(starwars$height)
+```
+---
+# Plotting data
+
+`plot()` visualises the correlation of two variables, through a scatterplot
+
+```{r, eval = F}
+plot(mtcars$mpg, mtcars$wt)
+```
+---
+
+```{r, eval = T}
+plot(mtcars$mpg, mtcars$wt)
+```
+
+
+---
 class: inverse
 
 # Quiz
@@ -283,11 +312,12 @@ class: inverse
 star_df <- head(starwars, 10)
 
 # calculate mean height
-mean(star_df$height, na.rm = TRUE)
 
 # proportion of humans in data
-sum(star_df$species=="Human") / length(star_df)
-  
+
+# generate a new variable that displays the mass per height
+#of each starwars character
+# store this in a new variable called mass_height
   
 ```
 ---
