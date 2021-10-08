@@ -350,25 +350,7 @@ hist(starwars$height)
 
 ![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 ---
-# Plotting data
 
-`plot()` visualises the correlation of two variables, through a scatterplot
-
-
-```r
-plot(mtcars$mpg, mtcars$wt)
-```
----
-
-
-```r
-plot(mtcars$mpg, mtcars$wt)
-```
-
-![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
-
-
----
 class: inverse
 
 # Quiz
@@ -387,6 +369,118 @@ star_df &lt;- head(starwars, 10)
   
 ```
 ---
+
+# Plotting data
+
+If you want to visualise how two variables relate to one another, you can generate a scatterplot using `plot()`. In `plot()` you first specify the x-coordinates, and then the y-coordinates of the plot. A series of other optional arguments allow you to connect dots via lines, modify axes and labels etc. 
+
+Using the `mtcars` dataset, which comes with base R, I can examine the relationship between a car's fuel consumption (in miles/gallon) and its weight. 
+
+
+```r
+plot(x = mtcars$mpg, y = mtcars$wt)
+```
+---
+
+
+```r
+plot(x = mtcars$mpg, y = mtcars$wt)
+```
+
+![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+# Labelling a plot
+
+I can add other, optional labels to the plot. Check `?plot` to see more options. 
+
+
+```r
+plot(mtcars$mpg, mtcars$wt,
+     main = "Correlation plot between a car's fuel consumption and weight",
+     xlab = 'Miles per gallon',  
+     ylab = 'Weight (in tons)', 
+     pch = 16,                 
+     col = gray(.0, .1))
+
+```
+
+---
+
+![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+---
+# Functions
+
+So far we have been creating objects, and modifying objects through pre-specified functions. 
+
+`R` also lets you write your own functions, however. 
+
+Functions are useful because they allow you to automate repetitive processes, such as generating summary statistics, tables, or standardizing variables, for example. 
+
+To create a function, you need to use the `function()` command.
+
+---
+# Functions
+
+In the example below, we replicate the `mean` function, which calculates the arithmetric average of a numeric vector. 
+
+
+```r
+mean_ft &lt;- function(x) {
+  x_bar &lt;- sum(x) / length(x)
+  return(x_bar)
+}
+```
+
+All objects stored within a function are internal to that function; they won't show up in your environment. `R` will only return those objects that you specifically ask to be returned. 
+
+
+```r
+age &lt;- c(18, 20, 22)
+mean_ft(age)
+## [1] 20
+```
+
+---
+# If statements
+
+What happens when we try to compute a mean of a character vector, using our newly built function? 
+
+
+```r
+mean_ft(c("hello"))
+## Error in sum(x): invalid 'type' (character) of argument
+```
+We can add a more understandable error using the `if` function, which executes a function only if the `if()` statement is `TRUE`. In the example below, the `mean_ft` function will stop and throw the `Input must be numeric` error whenever a non-numeric vector is used as an input. 
+
+
+```r
+mean_ft &lt;- function(x) {
+  if(!is.numeric(x)) {
+    stop("Input must be numeric")
+  } else {
+    x_bar &lt;- sum(x) / length(x)
+    return(x_bar)
+  }
+}
+```
+---
+# If statements
+
+
+```r
+mean_ft("hello")
+## Error in mean_ft("hello"): Input must be numeric
+
+mean_ft(c(1, 2, 4))
+## [1] 2.333333
+```
+
+
+
+---
+
 class: inverse, middle, center
 
 # Complete the Exercise worksheet

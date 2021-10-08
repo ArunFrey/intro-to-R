@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Arun Frey" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <link href="libs/leaflet/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet/leaflet.js"></script>
+    <link href="libs/leafletfix/leafletfix.css" rel="stylesheet" />
+    <script src="libs/proj4/proj4.min.js"></script>
+    <script src="libs/Proj4Leaflet/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding/leaflet.js"></script>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to R
+### Arun Frey
+### Department of Sociology, University of Oxford
+### 07.11.2021
+
+---
+
+
+
+
+
+
+```r
+library(leaflet)
+leaflet() %&gt;% addTiles() %&gt;% setView(-1.264, 51.752, zoom = 17)
+```
+
+<div id="htmlwidget-7c367ff00332b81259aa" style="width:100%;height:432px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7c367ff00332b81259aa">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[51.752,-1.264],17,[]]},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+
+# What is `R`? 
+
+- `R` is a free statistical programming software. You can download R [here](https://www.r-project.org).
+- In this course, we will be running R in the [RStudio IDE](https://www.rstudio.com/products/rstudio/).
+
+.pull-left[
+    ![R](img/r-logo.png)
+    ]
+    
+.pull-right[
+    ![RStudio](img/rstudio-logo.png)
+]
+
+---
+
+# Why `R`? 
+
+- It's free!
+
+--
+
+- It's open-source!
+
+--
+
+- It's versatile! (In fact, all materials in this class have been created in `R`! )
+
+---
+class: center, middle
+
+&lt;img src="img/rstudio-screenshot.png" width="100%" /&gt;
+
+---
+
+# This course
+
+- This course is designed to introduce you to the basics of `R` programming. 
+
+- By the end, you will know how to: 
+
+  1. Generate and transform numeric, logical, and character vectors
+  
+  2. Deal with missing values
+  
+  3. Load and inspect data
+  
+  4. Generate descriptives
+
+---
+class: center, middle 
+# Go to Github to download this course: &lt;https://github.com/ArunFrey/intro-to-R&gt;
+
+---
+
+```r
+
+library(coronavirus)
+
+corona_de &lt;- coronavirus[coronavirus$country=="Germany" &amp; 
+                           coronavirus$type=="death", ]
+
+corona_de$death_7 &lt;-  zoo::rollmean(corona_de$cases, k = 7, fill = NA)
+
+plot(x = corona_de$date, 
+     y = corona_de$cases, 
+     cex = 0.3)
+
+lines(x = corona_de$date, 
+     y = corona_de$death_7, 
+     type = "l",
+     cex = 1.5, 
+     col = "red")
+```
+
+---
+class: center, middle
+
+![](01_intro-to-R_slides_files/figure-html/covid-1.png)
+
+---
+# If you want to dive deeper
+
+This course only scratches the surface of what you can do in `R`. 
+
+For more elaborate introductions and more advanced guides, see the following (free!) books: 
+
+- [YaRrr! The Pirate’s Guide to R by _Nathaniel D. Phillips](https://bookdown.org/ndphillips/YaRrr)
+    
+    - This book is a great introduction to base R, and lots of material I draw from in this presentation is based on the book!
+
+- [R for Data Science by Gareth Golemund and Hadley Wickham](https://r4ds.had.co.nz)
+
+  - This book is fantastic if you want to learn about the `tidyverse` and tidy R, which is a different way of writting R code than base R. 
+
+- [Advanced R by Hadley Wickham](http://adv-r.had.co.nz/Introduction.html)
+
+  - Ths book is good for those who want to get a really in-depth understanding of how `R` operates. 
+  
+  
+---
+# If you want to dive deeper
+
+The `R` community is very welcoming and inclusive. If you are feeling stuck, chances are someone has had the same issue before. 
+
+Here are some helpful resources and great groups to join:
+
+- &lt;http://www.google.com&gt;
+- &lt;http://www.r-bloggers.com&gt;
+- &lt;http://www.stackoverflow.com&gt;
+- &lt;https://rladies.org&gt;
+- &lt;https://www.rstudio.com/resources/cheatsheets/&gt; (list of cheatsheets)
+
+---
+# Installing `R` and RStudio
+
+- Download and install `R` from here &lt;https://cloud.r-project.org&gt;
+
+- For Macs, you may have to download different versions:
+
+   - Intel chip (R-4.1.1.pkg) 
+   
+   - Apple Silicon M1 chip (R-4.1.1-arm64.pkg)
+
+- Download RStudio here: &lt;https://www.rstudio.com/products/rstudio/download/&gt;
+    
+In this course we will be using `R` exclusively through RStudio. 
+
+---
+class: center, inverse, middle 
+
+#Download and install R and RStudio
+
+---
+
+# Using RStudio
+
+When you open RStudio it should look something like this: 
+
+![](img/rstudio-1.png)
+---
+
+# Using RStudio 
+
+RStudio is an integrated development environment specifically developed for `R`, that lets you write code, run scripts, and view the results all in one.
+
+-   **Source**: This is the code editor, where you write and save your code.
+
+-   **Console**: This is where the output of your code will be printed.
+
+-   **Environment/History**: This is where any objects, such as vectors, matrices, or dataframes, will be stored.
+
+-   **Viewer**: This viewer previews any plots you create. You can also check your folder files and call for help here.  
+
+---
+
+background-image: url(https://bookdown.org/ndphillips/YaRrr/images/RStudio_Screenshot_Labels.png)
+background-size: contain
+
+---
+
+
+# Tips for using RStudio 
+
+**Always** write code into the source code file, except for small checks and tests.
+
+--
+
+To execute the line of source code where the cursor currently resides you can press the **Ctrl + Enter/Cmd + Enter key**, rather than manually pressing the Run toolbar button. 
+
+--
+
+Annotate your code using `#`
+
+
+```r
+# Introduction to R
+# 07.09.2021
+
+# Use head(x, n = 2) to see the first two rows of a dataframe
+head(mtcars, n = 2)
+##               mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4      21   6  160 110  3.9 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag  21   6  160 110  3.9 2.875 17.02  0  1    4    4
+```
+
+---
+# Send code from the source to the console 
+
+
+&lt;center&gt; &lt;img src="img/r-source-console.png" width="300"/&gt; &lt;/center&gt;
+
+
+---
+# Using packages
+
+R comes with a list of built in functions, but often you will want to use other functions written not by the original creators of `R`, but by other people. 
+
+If you want to use functions written by other people, you have to install it as a `package`. 
+
+To do this, we have to first install the package once, and then load it whenever we would like to use it.
+
+
+```r
+# install the package (you only need to do this once)
+install.packages('praise')
+```
+
+
+```r
+# load the package to use its functions
+library(praise)
+praise()
+## [1] "You are awesome!"
+```
+
+---
+class: center, middle
+
+&lt;img src="https://bookdown.org/ndphillips/YaRrr/images/packagebulb.png" width="400"/&gt;
+
+Credit: YaRrr! The Pirate's Guide to R
+
+---
+# Using packages
+
+Sometimes you only need to use a very specific function of a package one time, and loading the entire package may seem unnecessary. 
+
+You can use ` package::function` to call the function you are after. This tells `R` to only load the package for this specific chunk of code.  
+
+
+```r
+cowsay::say("Welcome to the course!", by = "cow")
+## 
+##  ----- 
+## Welcome to the course! 
+##  ------ 
+##     \   ^__^ 
+##      \  (oo)\ ________ 
+##         (__)\         )\ /\ 
+##              ||------w|
+##              ||      ||
+```
+
+---
+
+# Feeling stuck? 
+
+You can use `?` whenever you want to read the documentation of a particular command. 
+
+
+```r
+# how should I specify the mean and standard deviation of a normal distribution
+?rnorm
+# how does a histogram work
+?hist
+# how does the mean() function work
+?mean
+```
+
+---
+
+class: inverse, center, middle
+
+# Introducing the Basics
+
+---
+# What we'll cover today 
+
+## Introducing the Basics
+
+  1. Object types
+  
+  2. Vectors
+  
+  3. Missingness
+  
+  4. Vector functions  
+  
+  5. Dataframes
+  
+  6. Loading data
+
+
+---
+# Objects and functions
+
+Almost everything in `R` is either an object or a function. 
+
+- **Object**: number, vector, dataset, summary statistic, regression model, etc. 
+ 
+- **Function**: takes objects as arguments, does something, and returns an object. 
+
+--
+
+
+```r
+# Create a vector object called height
+height &lt;- c(189, 178, 166, 178, 190)
+
+# apply the mean() function to the object height
+mean(height)
+## [1] 180.2
+```
+&amp;#8594; The function `mean()` takes the object `height`, calculates the average, and returns a single number. 
+
+---
+# Objects and functions
+
+When you use `R`, you will mostly: 
+
+1. Define objects
+
+2. Apply functions to those objects
+
+3. Repeat! 
+
+---
+
+# R as a calculator 
+
+```r
+3+5
+## [1] 8
+
+10/2
+## [1] 5
+
+sqrt(4)
+## [1] 2
+```
+
+
+```r
+
+"Hello world!"
+## [1] "Hello world!"
+
+"1" + "3"
+## Error in "1" + "3": non-numeric argument to binary operator
+```
+
+
+---
+
+# The `&lt;-` operator
+
+You can assign values to variables using the `&lt;-` operator. You can then use the variable in subsequent operations. 
+
+
+```r
+x &lt;- 9 + 11
+x
+## [1] 20
+y &lt;- x / 2
+y
+## [1] 10
+```
+
+
+```r
+greetings &lt;- "Hello world!"
+greetings
+## [1] "Hello world!"
+```
+
+---
+class: inverse
+
+# Quiz 
+
+Just by looking at the code, what do each of the following lines return?
+
+```r
+12 - 2
+#A:
+
+x &lt;- 12 - 2
+
+y &lt;- x * 2
+y
+
+y/2
+y
+
+z &lt;- "1 + 2"
+z
+
+z + 3
+
+```
+
+---
+# Vectors
+
+We can create longer vectors by using `c()` (read: concatenate). 
+
+#### Numeric vectors
+
+
+```r
+w &lt;- 2 
+y &lt;- c(1, 2, 3)
+z &lt;- c(4, 5, 6)
+z
+## [1] 4 5 6
+```
+
+#### Character vectors 
+
+
+```r
+welcome &lt;- c("Welcome", "to", "this", "course!")
+welcome 
+## [1] "Welcome" "to"      "this"    "course!"
+```
+
+---
+# Vectors
+
+For longer vectors, writing out each element can be tedious. In addition to `c()`, there are other options. 
+
+| Function| Example|Result |
+|:-------------------------|:-----------------------------|:----------|
+|     `c(a, b, ...)`|    `c(1, 5, 9)` | 1, 5, 9     |
+|     `a:b`|    `1:5`| 1, 2, 3, 4, 5    |
+|     `seq(from, to, by, length.out)`|    `seq(from = 0, to = 6, by = 2)`| 0, 2, 4, 6     |
+|     `rep(x, times, each, length.out)`|    `rep(c(7, 8), times = 2, each = 2)`| 7, 7, 8, 8, 7, 7, 8, 8     |
+
+---
+
+# Logical vectors
+
+While numeric vectors can include any number and character values any character string, logical vectors can only take the values of either `TRUE` or `FALSE`.
+
+Logical vectors are therefore often used to distinguish between two groups, or select a certain subset of variables. 
+
+--
+
+In the example below, we create a logical vector that distinguishes between ages below and above the age of 18. 
+
+
+```r
+age &lt;- c(14, 19, 23, 13, 16, 19, 18)
+
+is_18 &lt;- age &gt;= 18
+is_18
+## [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE  TRUE
+```
+
+The vector `is_18` is `TRUE` when age is 18 or higher, and `FALSE` otherwise. 
+
+---
+
+# Logical operators
+
+In the previous example we use `&gt;=` to distinguish between ages below and above 
+Some logical operators include:
+
+| **Operator**  | **Description**           |
+|---------------|---------------------------|
+| `&lt;`           | less than                 |
+| `&lt;=`          | less than or equal to     |
+| `&gt;`           | greater than              |
+| `&gt;=`          | greater than or equal to  |
+| `==`          | exactly equal to          |
+| `!=`          | not equal to              |
+| `!x`          | Not x                     |
+| `x \&amp; y`      | x AND y                   |
+| `isTRUE(x)`   |	test if X is TRUE         |
+
+---
+
+# Missing values 
+
+When we deal with data in the real world, there is often lots of missingness.
+
+Missing values are denoted with `NA`. 
+
+`NA`s behave differently to other values. 
+
+
+```r
+num_vec &lt;- c(5, NA, 15, 20, 25, NA)
+num_vec / 5
+## [1]  1 NA  3  4  5 NA
+
+NA + 3
+## [1] NA
+
+c("hello", "my", "name", "is", NA)
+## [1] "hello" "my"    "name"  "is"    NA
+```
+
+---
+class: inverse, middle, center
+
+# Complete Exercise 1 on the worksheet
+
+---
+
+# Vector functions
+
+**Length**:
+Checks the length of a vector
+
+```r
+x &lt;- 2
+y &lt;- c(0.5, 45, 7, 45, 0.5)
+z1 &lt;- c("1 2 3 4 5 ", "6 7 8")
+length(x)
+## [1] 1
+length(y)
+## [1] 5
+length(z)
+## [1] 3
+```
+
+--
+
+**Sorting/unique**: sorts or displays the unique values of a vector
+
+```r
+sort(y)
+## [1]  0.5  0.5  7.0 45.0 45.0
+
+unique(y)
+## [1]  0.5 45.0  7.0
+```
+  
+---
+
+# Numeric vector functions
+
+| Function           | Example                |Result                 |
+|:-------------------|:----------------------|:-----------------------|
+|     `sum(x), product(x)`|    `sum(1:10)` |55     |
+|     `min(x), max(x)`|    `min(1:10)`|1    |
+|     `mean(x), median(x)`|    `mean(1:10)`     | 5.5 |
+|     `sd(x), var(x), range(x)`|    `sd(1:10)` | 3.0276504 |
+|     `summary(x)`|    `summary(1:10)`|`Min = 1.00. 1st Qu. = 3.25, Median = 5.50, Mean = 5.50, 3rd Qu. = 7.75, Max = 10.0`     |
+
+---
+class: inverse
+
+# Quiz
+
+Copy the following two vectors:
+
+```r
+age &lt;- c(22, 24,25, 25, 22, 21, 28, 23, 24, 27)
+welcome &lt;- c("Welcome", "to", "this", "course!")
+```
+
+Use `R` to generate: 
+
+1. The unique values in `age`. 
+
+2. The length of welcome
+
+3. The mean of age. 
+
+4. Round the mean of age to 0 decimals. _Hint_: You can use the `round` function, and see how it works using `?round`. 
+
+5. Can you compute the mean of `welcome`. Why/Why not? 
+
+---
+
+# Character vector functions
+
+If you look at the output of `welcome`, each word is included in separate quotation marks. 
+
+```r
+welcome
+## [1] "Welcome" "to"      "this"    "course!"
+```
+
+This is because `R` treats each of these words as a separate element in a vector. 
+
+--
+
+There are times when we might want to tell `R` to collapse the string into a single element. We can do this using the `paste()` function, specifying the option `collapse = TRUE`. 
+
+
+```r
+welcome2 &lt;- paste(welcome, collapse = " ")
+welcome2
+## [1] "Welcome to this course!"
+
+welcome3 &lt;- paste(welcome, collapse = "")
+welcome3
+## [1] "Welcometothiscourse!"
+```
+
+
+---
+
+# Missing values 
+
+A lot of descriptive functions will throw up an error when there are missing values. 
+
+
+```r
+num_vec &lt;- c(5, NA, 15, 20, 25, NA)
+sum(num_vec)
+## [1] NA
+mean(num_vec)
+## [1] NA
+```
+
+--
+
+Descriptive functions include the argument `na.rm = TRUE`, which explicitly tells `R` to ignore missing values. 
+
+
+```r
+sum(num_vec, na.rm = TRUE)
+## [1] 65
+mean(num_vec, na.rm = TRUE)
+## [1] 16.25
+```
+
+--
+
+`is.na` is a logical operation that allows us to identify missing values. 
+
+
+```r
+is.na(num_vec)
+## [1] FALSE  TRUE FALSE FALSE FALSE  TRUE
+
+sum(num_vec, na.rm = TRUE)
+## [1] 65
+```
+
+---
+
+# A note about vectors
+
+Vectors can include either character values or numeric values, not both! 
+
+
+```r
+x &lt;- rep(c(5, "a"), times = 2)
+x
+## [1] "5" "a" "5" "a"
+
+x / 2
+## Error in x/2: non-numeric argument to binary operator
+```
+With `x_num`, `R` automatically treats the vector as a character vector, because it includes some characters. 
+
+--
+
+If we force `R` to treat `x` as a numeric vector, it will replace all non-numeric elements with `NA`. 
+
+```r
+as.numeric(x)
+## Warning: NAs introduced by coercion
+## [1]  5 NA  5 NA
+```
+
+
+---
+class: inverse, middle, center
+
+# Complete Exercise 2 on the worksheet
+
+---
+
+# Indexing vectors with `[]`
+
+Often we don't want to retrieve the whole vector, but only a specific element. 
+
+We can do this using `[]`. 
+
+#### Numeric indexing
+`a[index]`, where `a` is the vector, and `index` is a vector of index values. 
+
+```r
+colors &lt;- colors()
+
+# What is the first color? 
+colors[1]
+## [1] "white"
+
+# What are the first 5 colors
+colors[1:3]
+## [1] "white"        "aliceblue"    "antiquewhite"
+```
+
+---
+# Logical indexing 
+
+When indexing a vector with a logical index, `R` will only return values for which the index is `TRUE`. 
+
+
+```r
+years &lt;- c(2010, 2005, 2012, 2013, 2001)
+
+# select all years above 2010
+years[years&gt;2010]
+## [1] 2012 2013
+
+# select all years larger than 2002 and smaller than 2013
+years[years &gt; 2002 &amp; years &lt; 2013]
+## [1] 2010 2005 2012
+```
+--
+
+`R` actually interprets TRUE values as 1 and FALSE values as 0. 
+
+This allows us to quickly answer questions like: 
+
+
+```r
+#How many observations in years are greater than 2005?
+sum(years &gt; 2005)
+## [1] 3
+
+# What's the proportion of observations in years greater than 2005
+mean(years &gt; 2005)
+## [1] 0.6
+```
+
+This is a really useful feature for quick calculations!
+
+
+---
+class: inverse
+
+# Quiz 
+
+
+```r
+# Generates a standard normal distribution
+x_norm &lt;- rnorm(1000, mean = 0, sd = 1)
+```
+
+1. Get the 10th and 20th observation. 
+
+2. Save all observations below 0 in a new variable called `x_norm_neg`. 
+
+3. How many observations are below 0? 
+
+4. Get the proportion of values below -2 and above 2. 
+
+---
+
+class: inverse
+
+# Quiz 
+
+1. Get the 10th and 20th observation
+
+```r
+x_norm[c(10, 20)]
+## [1] 0.6157467 0.6601145
+```
+--
+
+2. Save all observations below 0 in a new variable called `x_norm_neg`. 
+
+```r
+x_norm_neg &lt;- x_norm[x_norm&lt;0]
+```
+
+--
+
+3. How many observations are below 0? 
+
+```r
+length(x_norm_neg)
+## [1] 508
+```
+--
+
+4. Get the proportion of values below -2 and above 2. 
+
+```r
+mean(x_norm &gt; 2 | x_norm &lt; -2)
+## [1] 0.038
+```
+---
+
+
+# Changing values of a vector 
+
+In the example below, you know that the 4th value should have been `23`, but was wrongly coded as `NA`. 
+
+```r
+
+age &lt;- c(17, 21, 22, 25, NA)
+age[5] &lt;- 23
+age 
+## [1] 17 21 22 25 23
+
+age[age &gt;= 18] &lt;- "18+"
+age
+## [1] "17"  "18+" "18+" "18+" "18+"
+```
+
+---
+class: inverse
+# Quiz
+
+
+```r
+x &lt;- c(5, 15, NA, 25, 30)
+```
+
+1. What elements are we subsetting? 
+
+```r
+x[1]
+x[c(3, 4)]
+x[!is.na(x)]
+```
+
+2. What is a quick way to calculate the share of missing values in x? 
+
+3. Replace the missing values in `x` using the `is.na()` operator. 
+
+---
+
+# Dataframes
+
+Most of the work we do as sociologists will involve playing around with rectangular data or dataframes. 
+
+While vectors are one dimensional, dataframes have two dimensions; rows and columns. 
+
+--
+- **columns**: variables
+
+- **rows**: observations
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; height &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; mass &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; hair_color &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; skin_color &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Luke Skywalker &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 172 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 77 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; blond &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; fair &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; C-3PO &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 167 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; gold &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; R2-D2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NA &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; white, blue &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Darth Vader &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 202 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 136 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; none &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; white &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Leia Organa &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 150 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; brown &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; light &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Owen Lars &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 178 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 120 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; brown, grey &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; light &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+
+# Dataframes
+
+![](img/scalar-vector-matrix.png)
+
+---
+class: smaller
+
+# Creating a dataframe 
+
+You can turn multiple vectors into a dataframe using the `data.frame` command.
+
+
+```r
+# vectors
+country_name &lt;- c("Nigeria", "Gambia", "Finland", "Brazil")
+country_year &lt;- 2013
+country_pop_1m &lt;- c(173.6, 1.8, 5.4, 200.4)
+
+# combine into dataframe 
+pop_df &lt;- data.frame("country" = country_name, 
+                     "year" = country_year, 
+                     "pop_1m" = country_pop_1m,
+                     stringsAsFactors = FALSE)
+
+pop_df
+##   country year pop_1m
+## 1 Nigeria 2013  173.6
+## 2  Gambia 2013    1.8
+## 3 Finland 2013    5.4
+## 4  Brazil 2013  200.4
+```
+
+---
+
+# Load data
+
+Rather than constructing your own dataframe in `R`, you will often work with data that already comes in a specific format, such as a csv, excel, .txt, Stata (.dta), or other file type. 
+
+`R` can load all these different file types. 
+
+```r
+
+# csv file 
+data &lt;- read.csv(data)
+
+# To load stata files, you have to use the foreing package
+# Note that you might need to install the package 
+data &lt;- foreign::read.dta(data)
+
+# load an R data file 
+load("data.Rda")
+
+```
+
+---
+class: center, inverse, middle 
+
+# Complete Exercise 3 on the worksheet
+
+
+---
+# Inspect the data
+
+Here are some of the most important ways to inspect a dataframe. 
+
+| Function| Description| 
+|:------------------------|:-----------------------------|
+|     `head(x), tail(x)`| Print the first few rows (or last few rows). | 
+|     `View(x)`| Open the entire object in a new window | 
+|     `nrow(x), ncol(x), dim(x)`| Count the number of rows and columns  | 
+|     `names()`| Show the row (or column) names   | 
+|     `summary(x)`| Show the  summary statistics of a dataframe | 
+
+---
+# Inspect the data
+
+
+```r
+# get the dimensions (rows and columns) of your data
+dim(pop_df)
+## [1] 4 3
+
+# view the first 5 rows of data
+head(pop_df)
+##   country year pop_1m
+## 1 Nigeria 2013  173.6
+## 2  Gambia 2013    1.8
+## 3 Finland 2013    5.4
+## 4  Brazil 2013  200.4
+
+# view the last 2 rows of data
+tail(pop_df, 2)
+##   country year pop_1m
+## 3 Finland 2013    5.4
+## 4  Brazil 2013  200.4
+```
+
+---
+# Inspect the data 
+
+
+```r
+# inspect the variable names in your dataframe
+names(pop_df)
+## [1] "country" "year"    "pop_1m"
+
+# generate summary statistics for each variable in your dataframe. 
+summary(pop_df)
+##    country               year          pop_1m     
+##  Length:4           Min.   :2013   Min.   :  1.8  
+##  Class :character   1st Qu.:2013   1st Qu.:  4.5  
+##  Mode  :character   Median :2013   Median : 89.5  
+##                     Mean   :2013   Mean   : 95.3  
+##                     3rd Qu.:2013   3rd Qu.:180.3  
+##                     Max.   :2013   Max.   :200.4
+```
+
+---
+class: inverse, middle, center
+
+# Complete Exercise 3 on the worksheet
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
