@@ -1,4 +1,7 @@
-#
+# Mac files
+.DS_Store
+
+# cached files
 01_intro-to-R_slides_cache/*
 01_intro-to-R_slides_files/*
 01_intro-to-R_worksheet_cache/*
