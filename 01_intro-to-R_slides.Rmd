@@ -2,7 +2,7 @@
 title: "Introduction to R"
 author: "Arun Frey"
 institute: "Department of Sociology, University of Oxford"
-date: "07.11.2021"
+date: "06.10.2022"
 output:
   xaringan::moon_reader:
     #css: xaringan-themer.css
@@ -33,6 +33,13 @@ knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, cache = TRUE)
 
 theme_set(theme_bw())
 ```
+
+class: inverse, middle 
+
+```{R, echo = FALSE}
+cowsay::say("I'm Arun, I'll be your instructor!", by = 'cat')
+```
+---
 
 
 ```{r out.width='100%', fig.height=6, eval=require('leaflet')}
@@ -96,7 +103,7 @@ include_graphics("img/rstudio-screenshot.png")
 
 ---
 class: center, middle 
-# Go to Github to download this course: <https://github.com/ArunFrey/intro-to-R>
+# To download the course material, go to: <https://github.com/ArunFrey/intro-to-R>
 
 ---
 ```{r covid, fig.show="hide"}
@@ -163,10 +170,10 @@ Here are some helpful resources and great groups to join:
 - Download and install `R` from here <https://cloud.r-project.org>
 
 - For Macs, you may have to download different versions:
-
-   - Intel chip (R-4.1.1.pkg) 
+ 
+   - Intel chip (R-4.2.1.pkg) 
    
-   - Apple Silicon M1 chip (R-4.1.1-arm64.pkg)
+   - Apple Silicon M1 chip (R-4.2.1-arm64.pkg)
 
 - Download RStudio here: <https://www.rstudio.com/products/rstudio/download/>
     
@@ -188,7 +195,7 @@ When you open RStudio it should look something like this:
 
 # Using RStudio 
 
-RStudio is an integrated development environment specifically developed for `R`, that lets you write code, run scripts, and view the results all in one.
+RStudio is an **integrated development environment** specifically developed for `R`, that lets you write code, run scripts, and view the results all in one.
 
 -   **Source**: This is the code editor, where you write and save your code.
 
@@ -208,7 +215,7 @@ background-size: contain
 
 # Tips for using RStudio 
 
-**Always** write code into the source code file, except for small checks and tests.
+**Always** write code into the source code file, except for small checks and tests, and to install packages.
 
 --
 
@@ -271,6 +278,20 @@ You can use ` package::function` to call the function you are after. This tells 
 cowsay::say("Welcome to the course!", by = "cow")
 ```
 
+---
+# Using packages
+
+Note that, while this will work:
+```{r}
+cowsay::say("I love R!", by = "smallcat")
+```
+This won't: 
+
+```{r, error = TRUE}
+say("R is tough...", by = "pig")
+```
+
+Why/why not?
 ---
 
 # Feeling stuck? 
@@ -387,20 +408,30 @@ Just by looking at the code, what do each of the following lines return?
 ```{r, eval = FALSE}
 12 - 2
 #A:
-
+```
+--
+```{r, eval = FALSE}
 x <- 12 - 2
-
+```
+--
+```{r, eval = FALSE}
 y <- x * 2
 y
-
+```
+--
+```{r, eval = FALSE}
 y/2
 y
-
+```
+--
+```{r, eval = FALSE}
 z <- "1 + 2"
 z
+```
+--
 
+```{r, eval = FALSE}
 z + 3
-
 ```
 
 ---
@@ -435,6 +466,7 @@ For longer vectors, writing out each element can be tedious. In addition to `c()
 |     `a:b`|    `1:5`| `r 1:5`    |
 |     `seq(from, to, by, length.out)`|    `seq(from = 0, to = 6, by = 2)`| `r seq(from = 0, to = 6, by = 2)`     |
 |     `rep(x, times, each, length.out)`|    `rep(c(7, 8), times = 2, each = 2)`| `r rep(c(7, 8), times = 2, each = 2)`     |
+
 
 ---
 
@@ -495,6 +527,25 @@ NA + 3
 
 c("hello", "my", "name", "is", NA)
 ```
+
+
+---
+class: inverse
+
+# Quiz 
+
+### Generate a vector named `x` which contains the numbers from 15 to 30. 
+
+Try to think about the tedious and the easy version.
+
+--
+
+```{r}
+x1 <- c(15:30)
+x2 <- seq(from = 15, to = 30, by = 1)
+x1 == x2
+```
+
 
 ---
 class: inverse, middle, center
@@ -654,12 +705,14 @@ We can do this using `[]`.
 #### Numeric indexing
 `a[index]`, where `a` is the vector, and `index` is a vector of index values. 
 ```{r}
-colors <- colors()
+x <- c(2, 4, 6)
+x[1]
 
+colors <- colors()
 # What is the first color? 
 colors[1]
 
-# What are the first 5 colors
+# What are the first 3 colors
 colors[1:3]
 ```
 
@@ -677,13 +730,17 @@ years[years>2010]
 # select all years larger than 2002 and smaller than 2013
 years[years > 2002 & years < 2013]
 ```
---
+
+---
+# Logical indexing 
 
 `R` actually interprets TRUE values as 1 and FALSE values as 0. 
 
 This allows us to quickly answer questions like: 
 
 ```{r}
+years <- c(2010, 2005, 2012, 2013, 2001)
+
 #How many observations in years are greater than 2005?
 sum(years > 2005)
 
@@ -748,6 +805,9 @@ mean(x_norm > 2 | x_norm < -2)
 # Changing values of a vector 
 
 In the example below, you know that the 4th value should have been `23`, but was wrongly coded as `NA`. 
+
+You can replace this mistake by assigning the correct value to the vector element, using its index. 
+
 ```{r}
 
 age <- c(17, 21, 22, 25, NA)
@@ -778,6 +838,48 @@ x[!is.na(x)]
 3. Replace the missing values in `x` using the `is.na()` operator. 
 
 ---
+
+
+---
+class: inverse
+# Quiz
+
+```{r}
+x <- c(5, 15, NA, 25, 30)
+```
+
+What elements are we subsetting? 
+
+--
+
+```{r, eval = TRUE}
+x[1]
+x[c(3, 4)]
+x[!is.na(x)]
+```
+
+--
+
+What is a quick way to calculate the share of missing values in x? 
+
+--
+
+```{r}
+mean(is.na(x))
+```
+
+--
+
+Replace the missing values in `x` using the `is.na()` operator. 
+
+--
+
+```{r}
+x[is.na(x)] <- 20
+```
+
+---
+
 
 # Dataframes
 
@@ -833,22 +935,16 @@ Rather than constructing your own dataframe in `R`, you will often work with dat
 ```{r, eval = FALSE}
 
 # csv file 
-data <- read.csv(data)
+data <- read.csv("data.csv")
 
 # To load stata files, you have to use the foreing package
 # Note that you might need to install the package 
-data <- foreign::read.dta(data)
+data <- foreign::read.dta("final_data_revised_v5.dta")
 
 # load an R data file 
 load("data.Rda")
 
 ```
-
----
-class: center, inverse, middle 
-
-# Complete Exercise 3 on the worksheet
-
 
 ---
 # Inspect the data

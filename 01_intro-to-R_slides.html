@@ -21,15 +21,48 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Introduction to R
+]
+.author[
 ### Arun Frey
+]
+.institute[
 ### Department of Sociology, University of Oxford
-### 07.11.2021
+]
+.date[
+### 06.10.2022
+]
 
 ---
 
 
 
+
+class: inverse, middle 
+
+
+```
+## 
+##  -------------- 
+## I'm Arun, I'll be your instructor! 
+##  --------------
+##     \
+##       \
+##         \
+##             |\___/|
+##           ==) ^Y^ (==
+##             \  ^  /
+##              )=*=(
+##             /     \
+##             |     |
+##            /| | | |\
+##            \| | |_|/\
+##       jgs  //_// ___/
+##                \_)
+## 
+```
+---
 
 
 
@@ -38,8 +71,8 @@ library(leaflet)
 leaflet() %&gt;% addTiles() %&gt;% setView(-1.264, 51.752, zoom = 17)
 ```
 
-<div id="htmlwidget-7c367ff00332b81259aa" style="width:100%;height:432px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-7c367ff00332b81259aa">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[51.752,-1.264],17,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-55baea523b886331f71d" style="width:100%;height:432px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-55baea523b886331f71d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]}],"setView":[[51.752,-1.264],17,[]]},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -95,7 +128,7 @@ class: center, middle
 
 ---
 class: center, middle 
-# Go to Github to download this course: &lt;https://github.com/ArunFrey/intro-to-R&gt;
+# To download the course material, go to: &lt;https://github.com/ArunFrey/intro-to-R&gt;
 
 ---
 
@@ -163,10 +196,10 @@ Here are some helpful resources and great groups to join:
 - Download and install `R` from here &lt;https://cloud.r-project.org&gt;
 
 - For Macs, you may have to download different versions:
-
-   - Intel chip (R-4.1.1.pkg) 
+ 
+   - Intel chip (R-4.2.1.pkg) 
    
-   - Apple Silicon M1 chip (R-4.1.1-arm64.pkg)
+   - Apple Silicon M1 chip (R-4.2.1-arm64.pkg)
 
 - Download RStudio here: &lt;https://www.rstudio.com/products/rstudio/download/&gt;
     
@@ -188,7 +221,7 @@ When you open RStudio it should look something like this:
 
 # Using RStudio 
 
-RStudio is an integrated development environment specifically developed for `R`, that lets you write code, run scripts, and view the results all in one.
+RStudio is an **integrated development environment** specifically developed for `R`, that lets you write code, run scripts, and view the results all in one.
 
 -   **Source**: This is the code editor, where you write and save your code.
 
@@ -208,7 +241,7 @@ background-size: contain
 
 # Tips for using RStudio 
 
-**Always** write code into the source code file, except for small checks and tests.
+**Always** write code into the source code file, except for small checks and tests, and to install packages.
 
 --
 
@@ -257,7 +290,7 @@ install.packages('praise')
 # load the package to use its functions
 library(praise)
 praise()
-## [1] "You are awesome!"
+## [1] "You are grand!"
 ```
 
 ---
@@ -288,6 +321,33 @@ cowsay::say("Welcome to the course!", by = "cow")
 ##              ||      ||
 ```
 
+---
+# Using packages
+
+Note that, while this will work:
+
+```r
+cowsay::say("I love R!", by = "smallcat")
+## 
+##  -------------- 
+## I love R! 
+##  --------------
+##     \
+##      \
+##       \
+##          /\_/\
+##         ( o.o )
+##          &gt; ^ &lt;      [nosig]
+```
+This won't: 
+
+
+```r
+say("R is tough...", by = "pig")
+## Error in say("R is tough...", by = "pig"): could not find function "say"
+```
+
+Why/why not?
 ---
 
 # Feeling stuck? 
@@ -420,20 +480,35 @@ Just by looking at the code, what do each of the following lines return?
 ```r
 12 - 2
 #A:
+```
+--
 
+```r
 x &lt;- 12 - 2
+```
+--
 
+```r
 y &lt;- x * 2
 y
+```
+--
 
+```r
 y/2
 y
+```
+--
 
+```r
 z &lt;- "1 + 2"
 z
+```
+--
 
+
+```r
 z + 3
-
 ```
 
 ---
@@ -472,6 +547,7 @@ For longer vectors, writing out each element can be tedious. In addition to `c()
 |     `a:b`|    `1:5`| 1, 2, 3, 4, 5    |
 |     `seq(from, to, by, length.out)`|    `seq(from = 0, to = 6, by = 2)`| 0, 2, 4, 6     |
 |     `rep(x, times, each, length.out)`|    `rep(c(7, 8), times = 2, each = 2)`| 7, 7, 8, 8, 7, 7, 8, 8     |
+
 
 ---
 
@@ -537,6 +613,28 @@ NA + 3
 c("hello", "my", "name", "is", NA)
 ## [1] "hello" "my"    "name"  "is"    NA
 ```
+
+
+---
+class: inverse
+
+# Quiz 
+
+### Generate a vector named `x` which contains the numbers from 15 to 30. 
+
+Try to think about the tedious and the easy version.
+
+--
+
+
+```r
+x1 &lt;- c(15:30)
+x2 &lt;- seq(from = 15, to = 30, by = 1)
+x1 == x2
+##  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [16] TRUE
+```
+
 
 ---
 class: inverse, middle, center
@@ -724,13 +822,16 @@ We can do this using `[]`.
 `a[index]`, where `a` is the vector, and `index` is a vector of index values. 
 
 ```r
-colors &lt;- colors()
+x &lt;- c(2, 4, 6)
+x[1]
+## [1] 2
 
+colors &lt;- colors()
 # What is the first color? 
 colors[1]
 ## [1] "white"
 
-# What are the first 5 colors
+# What are the first 3 colors
 colors[1:3]
 ## [1] "white"        "aliceblue"    "antiquewhite"
 ```
@@ -752,7 +853,9 @@ years[years&gt;2010]
 years[years &gt; 2002 &amp; years &lt; 2013]
 ## [1] 2010 2005 2012
 ```
---
+
+---
+# Logical indexing 
 
 `R` actually interprets TRUE values as 1 and FALSE values as 0. 
 
@@ -760,6 +863,8 @@ This allows us to quickly answer questions like:
 
 
 ```r
+years &lt;- c(2010, 2005, 2012, 2013, 2001)
+
 #How many observations in years are greater than 2005?
 sum(years &gt; 2005)
 ## [1] 3
@@ -801,7 +906,7 @@ class: inverse
 
 ```r
 x_norm[c(10, 20)]
-## [1] 0.6157467 0.6601145
+## [1] -1.1720681  0.4840753
 ```
 --
 
@@ -817,7 +922,7 @@ x_norm_neg &lt;- x_norm[x_norm&lt;0]
 
 ```r
 length(x_norm_neg)
-## [1] 508
+## [1] 480
 ```
 --
 
@@ -825,7 +930,7 @@ length(x_norm_neg)
 
 ```r
 mean(x_norm &gt; 2 | x_norm &lt; -2)
-## [1] 0.038
+## [1] 0.047
 ```
 ---
 
@@ -833,6 +938,9 @@ mean(x_norm &gt; 2 | x_norm &lt; -2)
 # Changing values of a vector 
 
 In the example below, you know that the 4th value should have been `23`, but was wrongly coded as `NA`. 
+
+You can replace this mistake by assigning the correct value to the vector element, using its index. 
+
 
 ```r
 
@@ -868,6 +976,56 @@ x[!is.na(x)]
 3. Replace the missing values in `x` using the `is.na()` operator. 
 
 ---
+
+
+---
+class: inverse
+# Quiz
+
+
+```r
+x &lt;- c(5, 15, NA, 25, 30)
+```
+
+What elements are we subsetting? 
+
+--
+
+
+```r
+x[1]
+## [1] 5
+x[c(3, 4)]
+## [1] NA 25
+x[!is.na(x)]
+## [1]  5 15 25 30
+```
+
+--
+
+What is a quick way to calculate the share of missing values in x? 
+
+--
+
+
+```r
+mean(is.na(x))
+## [1] 0.2
+```
+
+--
+
+Replace the missing values in `x` using the `is.na()` operator. 
+
+--
+
+
+```r
+x[is.na(x)] &lt;- 20
+```
+
+---
+
 
 # Dataframes
 
@@ -981,22 +1139,16 @@ Rather than constructing your own dataframe in `R`, you will often work with dat
 ```r
 
 # csv file 
-data &lt;- read.csv(data)
+data &lt;- read.csv("data.csv")
 
 # To load stata files, you have to use the foreing package
 # Note that you might need to install the package 
-data &lt;- foreign::read.dta(data)
+data &lt;- foreign::read.dta("final_data_revised_v5.dta")
 
 # load an R data file 
 load("data.Rda")
 
 ```
-
----
-class: center, inverse, middle 
-
-# Complete Exercise 3 on the worksheet
-
 
 ---
 # Inspect the data
@@ -1107,6 +1259,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
