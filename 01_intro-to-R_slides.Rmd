@@ -506,7 +506,7 @@ Some logical operators include:
 | `==`          | exactly equal to          |
 | `!=`          | not equal to              |
 | `!x`          | Not x                     |
-| `x \& y`      | x AND y                   |
+| `x & y`       | x AND y                   |
 | `isTRUE(x)`   |	test if X is TRUE         |
 
 ---
@@ -541,6 +541,12 @@ Try to think about the tedious and the easy version.
 --
 
 ```{r}
+x1 <- c(15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25 ,26, 27, 28 , 29, 30)
+```
+
+--
+
+```{r}
 x1 <- c(15:30)
 x2 <- seq(from = 15, to = 30, by = 1)
 x1 == x2
@@ -561,7 +567,7 @@ Checks the length of a vector
 ```{r}
 x <- 2
 y <- c(0.5, 45, 7, 45, 0.5)
-z1 <- c("1 2 3 4 5 ", "6 7 8")
+z <- c("1 2 3 4 5 ", "6 7 8")
 length(x)
 length(y)
 length(z)
@@ -836,8 +842,6 @@ x[!is.na(x)]
 2. What is a quick way to calculate the share of missing values in x? 
 
 3. Replace the missing values in `x` using the `is.na()` operator. 
-
----
 
 
 ---

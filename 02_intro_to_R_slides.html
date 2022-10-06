@@ -12,10 +12,18 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
+.title[
 # Introduction to R
+]
+.author[
 ### Arun Frey
+]
+.institute[
 ### Department of Sociology, University of Oxford
+]
+.date[
 ### 08.11.2021
+]
 
 ---
 
@@ -44,6 +52,7 @@ unique(x3)
 
 sum(x2)
 ## [1] 5
+
 round(mean(x2), digits = 0)
 ## [1] 1
 
@@ -62,7 +71,7 @@ class(x3)
 normal &lt;- rnorm(1000, mean = 0, sd = 1)
 
 normal[1:3]
-## [1]  0.08076094  0.75364362 -0.26310899
+## [1] -1.1086213  0.5188708  0.1340417
 
 normal_pos &lt;- normal
 
@@ -74,8 +83,9 @@ normal_pos[normal_pos&lt;=0] &lt;- NA
 
 ```r
 par(mfrow=c(1,2))
-hist(normal)
-hist(normal_pos)
+
+hist(normal, xlim = c(-3, 3))
+hist(normal_pos, xlim = c(-3, 3))
 ```
 
 ![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
@@ -86,46 +96,65 @@ hist(normal_pos)
 ```r
 # dataframes
 class_df &lt;- data.frame(
-  "name" = c("Arun", "Mark", "Jenn"),
-  "age" =  c(29, 28, 25), 
-  "dep" = c("soc", "soc", "pol"), 
-  "degree" = c("dphil", "dphil", "msc")
+  "name" = c("Arun", "Mark", "Jamie", "Jenn"),
+  "age" =  c(30, 29, 28, 25), 
+  "dep" = c("soc", "soc", "soc", "pol"), 
+  "degree" = c("postdoc", "dphil", "dphil", "msc")
 )
 
-# read data
-##read.csv, foreign::read.dta, read.delim
+# to read data, we can use: 
+## read.csv, foreign::read.dta, read.delim
 ```
 
 ---
 
+inspect first and last 2 observations of data
+
+--
+
 
 ```r
-# inspect data
 head(class_df, 2)
-##   name age dep degree
-## 1 Arun  29 soc  dphil
-## 2 Mark  28 soc  dphil
-
+##   name age dep  degree
+## 1 Arun  30 soc postdoc
+## 2 Mark  29 soc   dphil
 tail(class_df, 2)
-##   name age dep degree
-## 2 Mark  28 soc  dphil
-## 3 Jenn  25 pol    msc
+##    name age dep degree
+## 3 Jamie  28 soc  dphil
+## 4  Jenn  25 pol    msc
+```
 
+--
+
+check column types:
+
+--
+
+
+```r
 str(class_df)
-## 'data.frame':	3 obs. of  4 variables:
-##  $ name  : chr  "Arun" "Mark" "Jenn"
-##  $ age   : num  29 28 25
-##  $ dep   : chr  "soc" "soc" "pol"
-##  $ degree: chr  "dphil" "dphil" "msc"
+## 'data.frame':	4 obs. of  4 variables:
+##  $ name  : chr  "Arun" "Mark" "Jamie" "Jenn"
+##  $ age   : num  30 29 28 25
+##  $ dep   : chr  "soc" "soc" "soc" "pol"
+##  $ degree: chr  "postdoc" "dphil" "dphil" "msc"
+```
+--
 
+get summary statistics: 
+
+--
+
+
+```r
 summary(class_df)
 ##      name                age            dep               degree         
-##  Length:3           Min.   :25.00   Length:3           Length:3          
-##  Class :character   1st Qu.:26.50   Class :character   Class :character  
-##  Mode  :character   Median :28.00   Mode  :character   Mode  :character  
-##                     Mean   :27.33                                        
-##                     3rd Qu.:28.50                                        
-##                     Max.   :29.00
+##  Length:4           Min.   :25.00   Length:4           Length:4          
+##  Class :character   1st Qu.:27.25   Class :character   Class :character  
+##  Mode  :character   Median :28.50   Mode  :character   Mode  :character  
+##                     Mean   :28.00                                        
+##                     3rd Qu.:29.25                                        
+##                     Max.   :30.00
 ```
 
 ---
@@ -136,7 +165,11 @@ class: inverse, middle, center
 ---
 # Accessing variables in dataframes
 
-To access the names of variables (i.e. columns) in our data, use `names()`. 
+Yesterday we ended with inspecting the dataset as a whole. 
+
+But we normally want to access, inspect and transform only a subset of those variables.
+
+To inspect the names of the columns in our data, we can use `names()`. 
 
 
 ```r
@@ -211,15 +244,24 @@ head(starwars[, c("name", "species")])
 survey &lt;- data.frame("index" = c(1, 2, 3),
                      "name" = c("Mark", "Arun", "Jenn"))
 
-survey$age &lt;- c(28, 29, 25)
+survey 
+##   index name
+## 1     1 Mark
+## 2     2 Arun
+## 3     3 Jenn
+
+survey$height_cm &lt;- c(188, 190, 175)
 
 survey
-##   index name age
-## 1     1 Mark  28
-## 2     2 Arun  29
-## 3     3 Jenn  25
+##   index name height_cm
+## 1     1 Mark       188
+## 2     2 Arun       190
+## 3     3 Jenn       175
 
-survey$age_sq &lt;- survey$age^2
+survey$height_ft &lt;- survey$height_cm / 30.48
+
+survey$height_ft
+## [1] 6.167979 6.233596 5.741470
 ```
 
 ---
@@ -232,22 +274,32 @@ A dataframe consists of `n * m` observations.
 
 Just like with indexing vectors, you can also select individual observations in a dataframe, by specifying the row and the column of the observation `df[rows, columns]`. 
 
+---
+# Indexing in dataframes
+
+**`df[rows, columns]`**
+
 
 ```r
-df &lt;- data.frame("var1" = c(1, 2, 3), "var2" = c(4, 5, 6))
+df &lt;- data.frame("var1" = c("a", "b", "c"), "var2" = c(4, 5, 6))
+df
+##   var1 var2
+## 1    a    4
+## 2    b    5
+## 3    c    6
 
-# observation in first row, first column
-df[1, 1]
-## [1] 1
-
-# observation in third row, second column
-df[3, "var2"]
-## [1] 6
-
-# first observation, all columns
+# Return row 1
 df[1, ]
 ##   var1 var2
-## 1    1    4
+## 1    a    4
+
+# Return column 2
+df[, 2]
+## [1] 4 5 6
+
+# Rows 1:3 from column 2
+df[1:5, 2]
+## [1]  4  5  6 NA NA
 ```
 
 ---
@@ -259,40 +311,44 @@ What does each of the following lines return?
 
 
 ```r
-
+df &lt;- data.frame("var1" = c("a", "b", "c"), "var2" = c(4, 5, 6))
 df[1, 2]
-
 df[, 2]
-
 df[1,1]
-
 df[c(1, 2), 1]
-
 ```
 
-
----
-class: inverse
-
-# Quiz
-
-What does each of the following lines return? 
+--
 
 
 ```r
 df[1, 2]
 ## [1] 4
-
-df[, 2]
-## [1] 4 5 6
-
-df[1,1]
-## [1] 1
-
-df[c(1, 2), 1]
-## [1] 1 2
 ```
 
+--
+
+
+```r
+df[, 2]
+## [1] 4 5 6
+```
+
+--
+
+
+```r
+df[1,1]
+## [1] "a"
+```
+
+--
+
+
+```r
+df[c(1, 2), 1]
+## [1] "a" "b"
+```
 
 ---
 # Slicing data with [, ]
@@ -301,20 +357,33 @@ df[c(1, 2), 1]
 
 You can also index dataframes using a logical vector
 
+The `mtcars` dataset lists a number of cars. 
 
 ```r
-# create a new dataframe with only
-# those cars with 6 cylinders
-mtcars_6cyl &lt;- mtcars[mtcars$cyl==6, ]
+dim(mtcars)
+## [1] 32 11
+```
 
-# create a new dataframe of only cars with 6 cylinders and mpg above 20  
-mtcars_6cyl_20mpg &lt;- mtcars[mtcars$mpg&gt;20 &amp; mtcars$cyl==6]
+Lets say we only want to focus on cars with 6 cylinders.
+
+```r
+mtcars_6cyl &lt;- mtcars[mtcars$cyl==6, ]
+dim(mtcars_6cyl)
+## [1]  7 11
+```
+
+We can also specify multiple logical conditions.
+
+```r
+mtcars_6cyl_20mpg &lt;- mtcars[mtcars$mpg&gt;20 &amp; mtcars$cyl==6, ]
+dim(mtcars_6cyl_20mpg)
+## [1]  3 11
 ```
 
 ---
 # Slicing with subset
 
-The `subset()` function allows you to slice data just like with `[]`, but the code is easier to write. 
+The `subset()` function also allows you to slice data just like with `[]`, but the code is easier to write. 
 
 
 
@@ -330,51 +399,50 @@ subset(x = mtcars,
 ```
 
 ---
+
+class: inverse
+
+# Quiz
+
+Using the mtcars data, answer the following questions
+
+```r
+# calculate the mean, min, and max mpg
+
+# calculate the proportion of cars with 6 cylinders
+
+# generate a new dataset, mtcars_20mpg that only includes cars with 20+ mpg
+
+```
+
+---
 # Plotting data
 
 You can plot descriptive statistics using the `plot()` and `hist()` commands. 
 
 `hist()` visualises the distribution of one variable.
 
-
-```r
-hist(starwars$height)
-```
-
 ---
+# Plotting data
 
 
 ```r
-hist(starwars$height)
+hist(mtcars$mpg)
 ```
 
-![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
----
+![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 
-class: inverse
-
-# Quiz
-
-
-```r
-star_df &lt;- head(starwars, 10)
-
-# calculate mean height
-
-# proportion of humans in data
-
-# generate a new variable that displays the mass per height
-#of each starwars character
-# store this in a new variable called mass_height
-  
-```
 ---
 
 # Plotting data
 
-If you want to visualise how two variables relate to one another, you can generate a scatterplot using `plot()`. In `plot()` you first specify the x-coordinates, and then the y-coordinates of the plot. A series of other optional arguments allow you to connect dots via lines, modify axes and labels etc. 
+Scatterplots allow you to visualise the relationship between two variables. 
 
-Using the `mtcars` dataset, which comes with base R, I can examine the relationship between a car's fuel consumption (in miles/gallon) and its weight. 
+You can create a scatterplot using `plot()`. 
+
+In `plot()` you first specify the x-coordinates, and then the y-coordinates of the plot. A series of other optional arguments allow you to connect dots via lines, modify axes and labels etc. 
+
+Let's examine the relationship between a car's fuel consumption (in miles/gallon) and its weight. 
 
 
 ```r
@@ -387,7 +455,7 @@ plot(x = mtcars$mpg, y = mtcars$wt)
 plot(x = mtcars$mpg, y = mtcars$wt)
 ```
 
-![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 
 ---
 # Labelling a plot
@@ -407,14 +475,14 @@ plot(mtcars$mpg, mtcars$wt,
 
 ---
 
-![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](02_intro_to_R_slides_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
 
 ---
 # Functions
 
 So far we have been creating objects, and modifying objects through pre-specified functions. 
 
-`R` also lets you write your own functions, however. 
+`R` also lets you write your own functions. 
 
 Functions are useful because they allow you to automate repetitive processes, such as generating summary statistics, tables, or standardizing variables, for example. 
 
@@ -477,7 +545,44 @@ mean_ft(c(1, 2, 4))
 ## [1] 2.333333
 ```
 
+---
+class: inverse
 
+# Quiz 
+
+Create a function that takes a number as input and returns its square. 
+
+Call the function `square_it`!
+
+--
+
+
+```r
+square_it &lt;- function(x) {
+  x_sq &lt;- x * x
+  return(x_sq)
+}
+
+# 
+square_it(4)
+## [1] 16
+```
+
+
+---
+class: inverse, center, middle
+
+# Great stuff, you can now code in `R`.
+
+# Well done!
+
+
+```r
+library(praise)
+
+praise()
+## [1] "You are majestic!"
+```
 
 ---
 
@@ -534,6 +639,19 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
 (function() {
   "use strict"
   // Replace <script> tags in slides area to make them executable
