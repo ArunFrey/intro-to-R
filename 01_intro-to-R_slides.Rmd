@@ -841,7 +841,7 @@ x[!is.na(x)]
 
 2. What is a quick way to calculate the share of missing values in x? 
 
-3. Replace the missing values in `x` using the `is.na()` operator. 
+3. Replace the missing values in `x` with 20 using the `is.na()` operator. 
 
 
 ---
@@ -874,7 +874,7 @@ mean(is.na(x))
 
 --
 
-Replace the missing values in `x` using the `is.na()` operator. 
+Replace the missing values in `x` with 20 using the `is.na()` operator. 
 
 --
 
