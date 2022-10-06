@@ -1,3 +1,6 @@
+# specific files
+gapminder_setup.R
+
 # Mac files
 .DS_Store
 
