@@ -1,13 +1,15 @@
 # Create a vector x with 1 to 50 
 x <- c(1:50)
 x
-# create a logical vector y thats true when x is smaller than 25
+# create a logical vector y that's true when x is smaller than 25
 y <- x < 25
 y
 # create a vector c(0, 5, 10, 15)
 v1 <- c(0, 5, 10, 15)
 v2 <- seq(0, 15, 5)
 v1 == v2
+
+# create a character vector
 my_name <- c('hello', 'my', 'name', 'is')
 my_name2 <- c(my_name, "Arun")
 my_name2
@@ -83,7 +85,7 @@ mean(x_norm < -2 | x_norm > 2)
 pop_df1 = read.csv("https://raw.githubusercontent.com/ArunFrey/intro-to-R/main/data/pop.csv")
 pop_df2 = foreign::read.dta("https://raw.githubusercontent.com/ArunFrey/intro-to-R/main/data/pop.dta")
 # to use the Rda file, you need to download it first and then find it from within your working directory. 
-load("/Users/arunfrey/Downloads/pop.Rda")
+load("[specify file location here]/pop.Rda")
 
 # 2. Load the pop2.csv into R and inspect it. What's wrong and how can you fix it? 
 pop4_df = read.csv("https://raw.githubusercontent.com/ArunFrey/intro-to-R/main/data/pop2.csv")
